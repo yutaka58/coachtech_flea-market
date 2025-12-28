@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\RegisterRequest; // これを使います
+use App\Http\Requests\LoginRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -47,12 +48,15 @@ class ItemController extends Controller
     }
 
     // ログイン処理（簡易版）
-    public function login(Request $request) {
+    public function login(LoginRequest $request) {
         $credentials = $request->only('email', 'password');
+    
         if (Auth::attempt($credentials)) {
-            return redirect('/');
-        }
-        return back()->withErrors(['login' => 'ログインに失敗しました']);
+        return redirect('/');
+    }
+
+        // 認証失敗時に「login_error」という名前でメッセージを返す
+        return back()->withErrors(['email' => 'ログイン情報が登録されていません']);
     }
 
     // プロフィール設定画面を表示する

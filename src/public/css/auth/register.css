@@ -1,16 +1,11 @@
 .header-content {
-    display: flex;
-    align-items: center;
-    background-color: #000;
-    /* 背景が黒の場合 */
+    width: 100%;
+    padding: 12px 50px;
+    background-color: black;
 }
 
-/* 1. ロゴエリア */
 .header-content img {
-    width: 250px;
-    /* 画像のサイズに合わせて調整 */
-    flex: 1;
-    /* 左側の比率を1にする */
+    width: 340px;
 }
 
 .register-form__content {
@@ -52,6 +47,7 @@
     border: 1px solid ;
     border-radius: 3px;
     appearance: none;
+    display: block;
 }
 
 .form__button {
@@ -74,4 +70,19 @@
 .login__link {
     margin-top: 20px;
     text-align: center;
+}
+
+.error-message {
+    text-align: left;
+    /* 文字を左寄せにする */
+    color: #ff0000;
+    /* 赤色 */
+    font-size: 14px;
+    /* 必要に応じてサイズ調整 */
+    margin-top: 5px;
+    /* 入力欄との隙間 */
+    width: 100%;
+    /* 幅いっぱいに広げて左端を基準にする */
+    display: block;
+    /* 確実にブロック要素として扱う */
 }

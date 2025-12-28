@@ -1,16 +1,15 @@
 .header-content {
-    padding: 15px 50px;
-    background-color: black;
+    padding: 0 50px;
 }
 
 .profile-form__content {
     margin: 0 auto;
-    padding: 30px 15px;
+    padding: 5px 15px;
     max-width: 1230px;
 }
 
 .profile-form__heading {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     text-align: center;
 }
 

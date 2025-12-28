@@ -74,6 +74,9 @@
                     <div class="form__input--text">
                         <input type="password" name="password_confirmation" />
                     </div>
+                    @error('password_confirmation')
+                        <div class="error-message" style="color: red;">{{ $message }}</div>
+                    @enderror
                 </div>
             </div>
 

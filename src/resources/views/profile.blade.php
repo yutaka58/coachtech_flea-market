@@ -7,7 +7,7 @@
 
 @section('content')
 
-<div class="profile-form__content">
+    <div class="profile-form__content">
         <div class="profile-form__heading">
             <h1>プロフィール設定</h1>
         </div>
