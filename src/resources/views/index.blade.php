@@ -6,3 +6,26 @@
 
 @section('content')
 
+<div class="top-page__content">
+    <div class="tab-menu">
+        <a href="/?tab=recommend" class="tab-item {{ $tab == 'recommend' ? 'active' : '' }}">おすすめ</a>
+        <a href="/?tab=mylist" class="tab-item {{ $tab == 'mylist' ? 'active' : '' }}">マイリスト</a>
+    </div>
+
+    <div class="item-grid">
+        @forelse ($items as $item)
+            <div class="item-card">
+                <a href="/item/{{ $item->id }}">
+                    <div class="item-image">
+                        <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->name }}">
+                    </div>
+                    <p class="item-name">{{ $item->name }}</p>
+                </a>
+            </div>
+        @empty
+            <p>表示する商品がありません。</p>
+        @endforelse
+    </div>
+</div>
+
+@endsection

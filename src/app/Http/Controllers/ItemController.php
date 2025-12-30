@@ -11,10 +11,6 @@ use Illuminate\Support\Facades\Auth;
 
 class ItemController extends Controller
 {
-    // トップページ
-    public function index() {
-        return view('index');
-    }
 
     // ログイン画面表示
     public function getLogin() {
@@ -65,4 +61,26 @@ class ItemController extends Controller
         $user = Auth::user();
         return view('profile', compact('user')); // profile.blade.phpを表示
     }
+
+    // app/Http/Controllers/ItemController.php
+
+    public function index(Request $request)
+    {
+        // 1. 現在のタブを取得（デフォルトは 'recommend'）
+        $tab = $request->query('tab', 'recommend');
+
+        if ($tab === 'mylist') {
+        // 2. マイリスト：ログイン中のユーザーがいいねした商品のみ取得
+        // ※ Likeモデルや多対多のリレーションが必要です
+        $items = Auth::check() 
+            ? Auth::user()->favoriteItems 
+            : collect(); // 未ログインなら空
+    } else {
+        // 3. おすすめ：全商品（または特定のロジックで抽出）を表示
+        $items = Item::all();
+    }
+
+        return view('index', compact('items', 'tab'));
+    }
+
 }

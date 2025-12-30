@@ -1,0 +1,38 @@
+.tab-menu {
+    display: flex;
+    gap: 40px;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 30px;
+    padding-left: 50px;
+}
+
+.tab-item {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    padding-bottom: 10px;
+    position: relative;
+}
+
+/* 選択されているタブのスタイル */
+.tab-item.active {
+    color: #ff0000;
+}
+
+.tab-item.active::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    width: 100%;
+    height: 3px;
+    background-color: #ff0000;
+}
+
+/* 商品一覧のグリッドレイアウト */
+.item-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 0 50px;
+}

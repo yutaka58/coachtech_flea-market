@@ -41,4 +41,11 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function favoriteItems()
+    {
+        // favoritesテーブルを中間テーブルとして、Itemモデルと紐付け
+        return $this->belongsToMany(Item::class, 'favorites');
+    }
+
 }
