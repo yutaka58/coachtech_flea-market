@@ -13,13 +13,13 @@
     </div>
 
     <div class="item-grid">
-        @forelse ($items as $item)
+        @forelse ($products as $product)
             <div class="item-card">
-                <a href="/item/{{ $item->id }}">
+                <a href="/item/{{ $product->id }}">
                     <div class="item-image">
-                        <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->name }}">
+                        <img src="{{ asset('storage/' . $product->img_url) }}" alt="{{ $product->name }}">
                     </div>
-                    <p class="item-name">{{ $item->name }}</p>
+                    <p class="item-name">{{ $product->name }}</p>
                 </a>
             </div>
         @empty

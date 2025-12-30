@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\RegisterRequest; // これを使います
 use App\Http\Requests\LoginRequest;
 use App\Models\User;
+use App\Models\Product;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
@@ -72,15 +73,15 @@ class ItemController extends Controller
         if ($tab === 'mylist') {
         // 2. マイリスト：ログイン中のユーザーがいいねした商品のみ取得
         // ※ Likeモデルや多対多のリレーションが必要です
-        $items = Auth::check() 
+        $products = Auth::check() 
             ? Auth::user()->favoriteItems 
             : collect(); // 未ログインなら空
     } else {
         // 3. おすすめ：全商品（または特定のロジックで抽出）を表示
-        $items = Item::all();
+        $products = Product::all();
     }
 
-        return view('index', compact('items', 'tab'));
+        return view('index', compact('products', 'tab'));
     }
 
 }
