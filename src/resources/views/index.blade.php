@@ -21,6 +21,12 @@
                 <a href="/item/{{ $product->id }}">
                     <div class="item-image">
                         <img class="image" src="{{ asset($product->img_url) }}" alt="{{ $product->name }}">
+                        {{-- ここに SOLD 表示を追加 --}}
+                        @if($product->order)
+                            <div class="sold-label">
+                                <span>SOLD</span>
+                            </div>
+                        @endif
                     </div>
                     <p class="item-name">{{ $product->name }}</p>
                 </a>

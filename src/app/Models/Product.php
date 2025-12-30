@@ -11,11 +11,16 @@ class Product extends Model
 
     protected $fillable = [
         'name',
-        'cell',
+        'price',
         'brand',
         'description',
         'img_url',
         'condition',
     ];
+
+    public function order()
+    {
+        return $this->hasOne(Order::class);
+    }
 
 }

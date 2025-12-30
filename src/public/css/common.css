@@ -3,6 +3,7 @@
     align-items: center;
     background-color: #000;
     /* 背景が黒の場合 */
+    padding: 0 50px;
 }
 
 /* 1. ロゴエリア */

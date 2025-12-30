@@ -70,18 +70,29 @@ class ItemController extends Controller
         // 1. 現在のタブを取得（デフォルトは 'recommend'）
         $tab = $request->query('tab', 'recommend');
 
+        // 現在ログインしているユーザーのIDを取得
+        $userId = Auth::id();
+
         if ($tab === 'mylist') {
-        // 2. マイリスト：ログイン中のユーザーがいいねした商品のみ取得
-        // ※ Likeモデルや多対多のリレーションが必要です
-        $products = Auth::check() 
-            ? Auth::user()->favoriteItems 
-            : collect(); // 未ログインなら空
-    } else {
-        // 3. おすすめ：全商品（または特定のロジックで抽出）を表示
-        $products = Product::all();
-    }
+            // 2. マイリスト：ログイン中のユーザーがいいねした商品のみ取得
+            // ※ Likeモデルや多対多のリレーションが必要です
+            $products = Auth::check() 
+                ? Auth::user()->favoriteItems 
+                : collect(); // 未ログインなら空
+        } else {
+            // おすすめ：全商品から「自分が出品した商品」を除外
+            $query = Product::with('order');
+
+            if (Auth::check()) {
+                // ログインしている場合、seller_id（出品者ID）が自分以外の商品を取得
+                // ※カラム名が user_id の場合は書き換えてください
+                $query->where('user_id', '!=', $userId);
+            }
+
+            $products = $query->get();
+        }
 
         return view('index', compact('products', 'tab'));
-    }
 
+    }
 }
