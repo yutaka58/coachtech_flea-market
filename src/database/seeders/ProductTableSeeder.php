@@ -48,7 +48,7 @@ class ProductTableSeeder extends Seeder
             'name' => '革靴',
             'cell' => '4000',
             'description' => 'クラシックなデザインの革靴',
-            'img_url' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Leather+Shoes+products+Photo.jpg',
+            'img_url' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Leather+Shoes+Product+Photo.jpg',
             'condition' => '状態が悪い',
         ];
         DB::table('products')->insert($spam);

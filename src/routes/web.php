@@ -14,6 +14,8 @@ use App\Http\Controllers\ItemController;
 |
 */
 
+// 未認証ユーザーも閲覧可能
+Route::get('/', [ItemController::class, 'reference']);
 
 // --- 公開ルート ---
 // ログイン

@@ -8,6 +8,9 @@
 
 <div class="top-page__content">
     <div class="tab-menu">
+        <!-- おすすめがリンク不要の場合[label]使用 -->
+        <label class="tab-item">おすすめ</label>
+
         <a href="/?tab=recommend" class="tab-item {{ $tab == 'recommend' ? 'active' : '' }}">おすすめ</a>
         <a href="/?tab=mylist" class="tab-item {{ $tab == 'mylist' ? 'active' : '' }}">マイリスト</a>
     </div>
@@ -17,7 +20,7 @@
             <div class="item-card">
                 <a href="/item/{{ $product->id }}">
                     <div class="item-image">
-                        <img src="{{ asset('storage/' . $product->img_url) }}" alt="{{ $product->name }}">
+                        <img class="image" src="{{ asset($product->img_url) }}" alt="{{ $product->name }}">
                     </div>
                     <p class="item-name">{{ $product->name }}</p>
                 </a>
