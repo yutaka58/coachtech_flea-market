@@ -23,18 +23,34 @@
 
             <ul class="header-nav">
                 @if (Auth::check())
-                <li class="header-nav__item">
-                    <form action="/logout" method="post">
-                        @csrf
-                        <a class="header-nav__link" href="/login">ログアウト</a>
-                    </form>
-                </li>
-                <li class="header-nav__item">
-                    <a class="header-nav__link" href="/mypage">マイページ</a>
-                </li>
-                <li class="header-nav__item">
-                    <a class="header-nav__sell-button" href="/sell">出品</a>
-                </li>
+                    {{-- ログイン中の表示 --}}
+                    <li class="header-nav__item">
+                        <form action="/logout" method="post">
+                            @csrf
+                            <button class="header-nav__link-button" type="submit" style="background:none; border:none; cursor:pointer;">ログアウト</button>
+                        </form>
+                    </li>
+                    <li class="header-nav__item">
+                        <a class="header-nav__link" href="/mypage">マイページ</a>
+                    </li>
+                    <li class="header-nav__item">
+                        <a class="header-nav__sell-button" href="/sell">出品</a>
+                    </li>
+                @else
+                    {{-- 未ログイン（ゲスト）時の表示：ここを追加して構造を維持する --}}
+                    <li class="header-nav__item">
+                        <a class="header-nav__link" href="/login">ログイン</a>
+                    </li>
+
+                    <!-- 下記不要であれば削除
+                    <li class="header-nav__item">
+                        <a class="header-nav__link" href="/register">会員登録</a>
+                    </li>
+                    <li class="header-nav__item">
+                        <a class="header-nav__sell-button" href="/sell">出品</a>
+                    </li>
+                    -->
+
                 @endif
             </ul>
         </div>

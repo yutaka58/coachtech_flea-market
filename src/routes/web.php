@@ -14,26 +14,23 @@ use App\Http\Controllers\ItemController;
 |
 */
 
-// 未認証ユーザーも閲覧可能
-Route::get('/', [ItemController::class, 'reference']);
+// --- 公開ルート（誰でもアクセス可能） ---
+// トップページ（indexメソッド内でログイン判定を行っているため、authの外でOK）
+Route::get('/', [ItemController::class, 'index']);
+Route::get('/item/{item_id}', [ItemController::class, 'show']);
 
-// --- 公開ルート ---
-// ログイン
-Route::get('/login', [ItemController::class, 'getLogin'])->name('login'); // 追加
+// ログイン・登録
+Route::get('/login', [ItemController::class, 'getLogin'])->name('login');
 Route::post('/login', [ItemController::class, 'login']);
+Route::get('/register', [ItemController::class, 'getRegister']);
+Route::post('/register', [ItemController::class, 'postRegister']);
 
-// 会員登録
-Route::get('/register', [ItemController::class, 'getRegister']); // 画面表示
-Route::post('/register', [ItemController::class, 'postRegister']); // 保存処理 (名前を変更)
-
-// --- 認証ルート ---
+// --- 認証ルート（ログイン必須） ---
 Route::middleware('auth')->group(function () {
-    Route::get('/', [ItemController::class, 'index']); // POSTからGETに修正
-    // プロフィール画面の「表示」用
-    Route::get('/mypage/profile', [ItemController::class, 'editProfile']); 
-    
-    // プロフィール画面の「更新」用（保存ボタンを押した時）
+    // ログアウト処理が必要ならここに追加
+    Route::post('/logout', [ItemController::class, 'logout']);
+
+    Route::get('/mypage/profile', [ItemController::class, 'editProfile']);
     Route::post('/mypage/profile', [ItemController::class, 'updateProfile']);
 });
-
 

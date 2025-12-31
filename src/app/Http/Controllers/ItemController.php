@@ -95,4 +95,24 @@ class ItemController extends Controller
         return view('index', compact('products', 'tab'));
 
     }
+
+    public function show($item_id)
+    {
+        // 商品を取得。見つからなければ404エラーを出す
+        $product = Product::with(['order'])->findOrFail($item_id);
+    
+        // 未認証ユーザーでも $product は取得できるので、そのままビューへ渡す
+        return view('item_detail', compact('product'));
+    }
+
+    //ログアウト機能
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate(); // セッションを破棄
+        $request->session()->regenerateToken(); // CSRFトークンを再生成
+    
+        return redirect('/login'); // ログイン画面へ遷移
+    }
+
 }

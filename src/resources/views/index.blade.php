@@ -8,11 +8,16 @@
 
 <div class="top-page__content">
     <div class="tab-menu">
-        <!-- おすすめがリンク不要の場合[label]使用 -->
-        <label class="tab-item">おすすめ</label>
+        <form action="/?tab=mylist" method="GET" class="tab-form">
+            <!-- おすすめがリンク不要の場合[label]使用 -->
+            <label class="tab-item">おすすめ</label>
 
-        <a href="/?tab=recommend" class="tab-item {{ $tab == 'recommend' ? 'active' : '' }}">おすすめ</a>
-        <a href="/?tab=mylist" class="tab-item {{ $tab == 'mylist' ? 'active' : '' }}">マイリスト</a>
+            {{-- マイリストボタン --}}
+            <button type="submit" name="tab" value="mylist"
+                class="tab-item-button {{ $tab == 'mylist' ? 'active' : '' }}">
+                マイリスト
+            </button>
+        </form>
     </div>
 
     <div class="item-grid">
