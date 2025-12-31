@@ -25,6 +25,9 @@ Route::post('/login', [ItemController::class, 'login']);
 Route::get('/register', [ItemController::class, 'getRegister']);
 Route::post('/register', [ItemController::class, 'postRegister']);
 
+// 検索機能
+route::get('/search', [ItemController::class, 'getSearch']);
+
 // --- 認証ルート（ログイン必須） ---
 Route::middleware('auth')->group(function () {
     // ログアウト処理が必要ならここに追加

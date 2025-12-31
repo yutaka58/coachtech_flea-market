@@ -115,4 +115,21 @@ class ItemController extends Controller
         return redirect('/login'); // ログイン画面へ遷移
     }
 
+    //検索機能
+    public function getSearch(Request $request)
+    {
+        $query = Product::query();
+
+    if ($request->filled('keyword'))
+        {
+            $keyword = $request->input('keyword');
+            $query->where('name','like','%'.$keyword.'%');
+        }
+
+        $products = $query->get();
+        $tab = 'recommend';
+        return view('index')->with(compact('products','tab'));
+    }
+
+
 }

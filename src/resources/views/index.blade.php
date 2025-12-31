@@ -9,8 +9,15 @@
 <div class="top-page__content">
     <div class="tab-menu">
         <form action="/?tab=mylist" method="GET" class="tab-form">
-            <!-- おすすめがリンク不要の場合[label]使用 -->
+            <!-- おすすめがリンク不要の場合[label]使用
             <label class="tab-item">おすすめ</label>
+             -->
+            
+            {{-- おすすめボタン --}}
+            <button type="submit" name="tab" value="recommend" 
+                class="tab-item-button {{ $tab == 'recommend' ? 'active' : '' }}">
+                おすすめ
+            </button>
 
             {{-- マイリストボタン --}}
             <button type="submit" name="tab" value="mylist"
