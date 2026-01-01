@@ -96,13 +96,13 @@ class ItemController extends Controller
 
     }
 
-    public function show($item_id)
+    public function show($product_id)
     {
         // 商品を取得。見つからなければ404エラーを出す
-        $product = Product::with(['order'])->findOrFail($item_id);
+        $product = Product::with(['order'])->findOrFail($product_id);
     
         // 未認証ユーザーでも $product は取得できるので、そのままビューへ渡す
-        return view('item_detail', compact('product'));
+        return view('item', compact('product'));
     }
 
     //ログアウト機能

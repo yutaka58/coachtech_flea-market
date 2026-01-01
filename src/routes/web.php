@@ -19,6 +19,8 @@ use App\Http\Controllers\ItemController;
 Route::get('/', [ItemController::class, 'index']);
 Route::get('/item/{item_id}', [ItemController::class, 'show']);
 
+
+
 // ログイン・登録
 Route::get('/login', [ItemController::class, 'getLogin'])->name('login');
 Route::post('/login', [ItemController::class, 'login']);
