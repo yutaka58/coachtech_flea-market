@@ -23,8 +23,10 @@
 
         <div class="product-actions">
             <div class="action-item">
-                <button class="icon-button"><img src="{{ asset('/images/ハートロゴ_デフォルト.png') }}" alt="いいね"></button>
-                <span class="count">3</span>
+                <button class="icon-button btn-favorite" data-product-id="{{ $product->id }}">
+                    <img src="{{ asset($product->isFavoritedBy(auth()->user()) ? '/images/ハートロゴ_ピンク.png' : '/images/ハートロゴ_デフォルト.png') }}" id="favorite-icon" alt="いいね"></button>
+                <span class="count" id="favorite-count">{{ $product->favorites->count() }}</span>
+
             </div>
             <div class="action-item">
                 <button class="icon-button"><img src="{{ asset('/images/ふきだしロゴ.png') }}" alt="コメント"></button>
@@ -89,4 +91,52 @@
         </section>
     </div>
 </div>
+
+<script>document.addEventListener('DOMContentLoaded', function() {
+    // 全ての「いいね」ボタンを取得（念のため個別ではなく全体で取得）
+    const favoriteBtn = document.querySelector('.btn-favorite');
+    
+    if (favoriteBtn) {
+        favoriteBtn.addEventListener('click', function(e) {
+            e.preventDefault(); // ボタンのデフォルト動作を防止
+
+            const productId = this.dataset.productId;
+            const icon = document.getElementById('favorite-icon');
+            const countSpan = document.getElementById('favorite-count');
+
+            // URLを確実に作成（スラッシュの有無に注意）
+            fetch('/products/' + productId + '/favorite', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.status === 401) {
+                    window.location.href = '/login';
+                    return;
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data) {
+                    // 数値とアイコンの更新
+                    countSpan.textContent = data.count;
+                    icon.src = data.liked 
+                        ? "{{ asset('/images/ハートロゴ_ピンク.png') }}" 
+                        : "{{ asset('/images/ハートロゴ_デフォルト.png') }}";
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    } else {
+        console.error('いいねボタンが見つかりません。クラス名を確認してください。');
+    }
+});
+</script>
+                
 @endsection
+
+

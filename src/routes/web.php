@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\FavoriteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,5 +38,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/mypage/profile', [ItemController::class, 'editProfile']);
     Route::post('/mypage/profile', [ItemController::class, 'updateProfile']);
+
+    Route::post('/products/{product}/favorite', [FavoriteController::class, 'toggle']);
 });
+
 

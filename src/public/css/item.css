@@ -59,6 +59,7 @@
 .icon-button {
     background: none;
     border: none;
+    outline: none;
     cursor: pointer;
     padding: 0;
 }
