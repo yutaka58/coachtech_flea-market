@@ -7,8 +7,9 @@ use App\Models\Product;
 
 class FavoriteController extends Controller
 {
-    public function toggle(Product $product)
+    public function toggle($item_id)
     {
+        $product = Product::findOrFail($item_id);
         $user = auth()->user();
     
         // 修正：カッコを正しく閉じ、セミコロンを削除する

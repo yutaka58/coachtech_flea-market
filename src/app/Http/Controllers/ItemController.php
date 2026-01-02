@@ -132,5 +132,13 @@ class ItemController extends Controller
         return view('index')->with(compact('products','tab'));
     }
 
+    public function purchase($item_id)
+    {
+        // 指定されたIDの商品データを取得
+        $product = \App\Models\Product::findOrFail($item_id);
+
+        // 購入画面（purchase.blade.php）を表示
+        return view('purchase', compact('product'));
+    }
 
 }

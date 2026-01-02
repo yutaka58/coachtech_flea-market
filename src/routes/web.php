@@ -39,7 +39,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/mypage/profile', [ItemController::class, 'editProfile']);
     Route::post('/mypage/profile', [ItemController::class, 'updateProfile']);
 
-    Route::post('/products/{product}/favorite', [FavoriteController::class, 'toggle']);
+    Route::post('/products/{item_id}/favorite', [FavoriteController::class, 'toggle']);
+
+    Route::get('/purchase/{item_id}', [ItemController::class, 'purchase']);
 });
 
 
