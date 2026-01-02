@@ -61,10 +61,22 @@
     border: none;
     outline: none;
     cursor: pointer;
-    padding: 0;
+    padding: 0 15px;
+}
+
+.icon-logo {
+    background: none;
+    border: none;
+    outline: none;
+    padding: 0 15px;
 }
 
 .icon-button img {
+    width: 32px;
+    height: 32px;
+}
+
+.icon-logo img {
     width: 32px;
     height: 32px;
 }
@@ -98,7 +110,6 @@
 
 .section-title {
     font-size: 18px;
-    border-bottom: 1px solid #333;
     padding-bottom: 8px;
     margin-bottom: 15px;
 }
@@ -160,7 +171,7 @@
 .comment-textarea {
     width: 100%;
     height: 120px;
-    margin-bottom: 15px;
+    margin-bottom: 5px;
     border: 1px solid #ccc;
     border-radius: 4px;
 }

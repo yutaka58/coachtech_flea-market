@@ -12,7 +12,6 @@ class FavoriteController extends Controller
         $product = Product::findOrFail($item_id);
         $user = auth()->user();
     
-        // 修正：カッコを正しく閉じ、セミコロンを削除する
         if ($product->isFavoritedBy($user)) {
             $product->favorites()->detach($user->id);
             $liked = false;

@@ -29,8 +29,8 @@
 
             </div>
             <div class="action-item">
-                <button class="icon-button"><img src="{{ asset('/images/ふきだしロゴ.png') }}" alt="コメント"></button>
-                <span class="count">1</span>
+                <span class="icon-logo"><img src="{{ asset('/images/ふきだしロゴ.png') }}" alt="コメント"></span>
+                <span class="count" id="comment-count">{{ $product->comments?->count() ?? 0 }}</span>
             </div>
         </div>
 
@@ -69,23 +69,34 @@
         </section>
 
         <section class="info-section">
-            <h2 class="section-title">コメント(1)</h2>
-            <div class="comment-item">
-                <div class="user-info">
-                    <div class="user-avatar"></div>
-                    <span class="user-name">admin</span>
+            <h2 class="section-title">コメント({{ $product->comments->count() }})</h2>
+    
+            @foreach($product->comments as $comment)
+                <div class="comment-item">
+                    <div class="user-info">
+                        <div class="user-avatar">
+                            {{-- プロフィール画像がある場合 --}}
+                            @if($comment->user->img_url)
+                                <img src="{{ asset($comment->user->img_url) }}">
+                            @endif
+                        </div>
+                        <span class="user-name">{{ $comment->user->name }}</span>
+                    </div>
+                    <div class="comment-body">
+                        {{ $comment->comment }}
+                    </div>
                 </div>
-                <div class="comment-body">
-                    こちらにコメントが入ります。
-                </div>
-            </div>
+            @endforeach
         </section>
 
         <section class="info-section">
-            <form action="#" method="POST" class="comment-form">
+            <form action="/item/{{ $product->id }}/comment" method="POST" class="comment-form">
                 @csrf
                 <label for="comment" class="form-label">商品へのコメント</label>
                 <textarea name="comment" id="comment" class="comment-textarea"></textarea>
+                @error('comment')
+                    <p style="color: red">{{ $message }}</p>
+                @enderror
                 <button type="submit" class="btn-submit">コメントを送信する</button>
             </form>
         </section>
