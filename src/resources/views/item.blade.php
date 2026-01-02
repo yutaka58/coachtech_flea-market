@@ -5,76 +5,86 @@
 @endsection
 
 @section('content')
-
-<div class="container">
-    <div class="left-content">
-        <div class="item-img">
-            <img class="image" src="{{ asset($product->img_url) }}">
+<div class="product-container">
+    {{-- 左側：商品画像 --}}
+    <div class="product-visual">
+        <div class="product-image-wrapper">
+            <img src="{{ asset($product->img_url) }}" alt="{{ $product->name }}" class="product-image">
         </div>
     </div>
 
-    <div class="right-content">
-        <div class="item-content__title">
-            <div class="item-title">
-                <h1 class="title">{{ $product->name }}</h1>
-            </div>
+    {{-- 右側：商品詳細 --}}
+    <div class="product-details">
+        <div class="product-header">
+            <h1 class="product-name">{{ $product->name }}</h1>
+            <p class="product-brand">{{ $product->brand }}</p>
+            <p class="product-price">￥{{ number_format($product->price) }}<span>(税込)</span></p>
         </div>
-        <div class="item-content__brand">
-            <div class="item-brand">
-                <p class="brand">{{ $product->brand }}</p>
-            </div>
-        </div>
-        <div class="item-content__price">
-            <div class="item-price">
-                <p class="price">￥{{ $product->price }} (税込)</p>
-            </div>
-        </div>
-        <div class="item-content__button">
-            <div class="item-button">
-                <button class="item-button__like">
-                    <img src="{{ asset('/images/ハートロゴ_デフォルト.png') }}" alt="いいね" class="img-like-icon"/>
-                    <p>いいね</p><!-- いいねの数を表示せる処理 -->
-                </button>
 
-                <button class="item-button__comment">
-                    <img src="{{ asset('/images/ふきだしロゴ.png') }}" alt="コメント" class="img-comment-icon"/>
-                    <p>コメント</p><!-- コメントの数を表示せる処理 -->
-                </button>
+        <div class="product-actions">
+            <div class="action-item">
+                <button class="icon-button"><img src="{{ asset('/images/ハートロゴ_デフォルト.png') }}" alt="いいね"></button>
+                <span class="count">3</span>
             </div>
-        </div>
-        <div class="item-purchase">
-            <div class="item-purchase__grid">
-                <a class="item-purchase__btn" href="/purchase/{item_id}">購入手続きへ</a>
-            </div>
-        </div>
-        <div class="item-content__subtitle">
-            <div class="item-subtitle">
-                <h2 class="subtitle">商品説明</h2>
-            </div>
-        </div>
-        <div class="item-content__subtitle">
-            <div class="item-subtitle">
-                <h2 class="subtitle">商品の情報</h2>
-            </div>
-        </div>
-        <div class="item-content__comment">
-            <div class="item-comment">
-                <p class="comment">コメント</p><span>(コメント数を表示させる)</span>
-            </div>
-        </div>
-        <div class="item-content__comment-input">
-            <div class="item-comment__input-field">
-                <label class="comment-input" for="comment">商品へのコメント</label>
-                <textarea name="comment" id=""></textarea>
-            </div>
-        </div>
-        <div class="comment-send">
-            <div class="comment-btn">
-                <a class="comment-send__btn" href="/purchase/{item_id}">コメントを送信する</a>
+            <div class="action-item">
+                <button class="icon-button"><img src="{{ asset('/images/ふきだしロゴ.png') }}" alt="コメント"></button>
+                <span class="count">1</span>
             </div>
         </div>
 
+        <div class="purchase-action">
+            <a href="/purchase/{{ $product->id }}" class="btn-purchase">購入手続きへ</a>
+        </div>
+
+        {{-- 各セクション --}}
+        <section class="info-section">
+            <h2 class="section-title">商品説明</h2>
+            <div class="description-content">
+                <p>カラー：グレー</p>
+                <p>新品</p>
+                <p>商品の状態は良好です。傷もありません。</p>
+                <p>購入後、即発送いたします。</p>
+            </div>
+        </section>
+
+        <section class="info-section">
+            <h2 class="section-title">商品の情報</h2>
+            <dl class="meta-list">
+                <div class="meta-item">
+                    <dt>カテゴリー</dt>
+                    <dd class="tag-group">
+                        <span class="category-tag">洋服</span>
+                        <span class="category-tag">メンズ</span>
+                    </dd>
+                </div>
+                <div class="meta-item">
+                    <dt>商品の状態</dt>
+                    <dd>良好</dd>
+                </div>
+            </dl>
+        </section>
+
+        <section class="info-section">
+            <h2 class="section-title">コメント(1)</h2>
+            <div class="comment-item">
+                <div class="user-info">
+                    <div class="user-avatar"></div>
+                    <span class="user-name">admin</span>
+                </div>
+                <div class="comment-body">
+                    こちらにコメントが入ります。
+                </div>
+            </div>
+        </section>
+
+        <section class="info-section">
+            <form action="#" method="POST" class="comment-form">
+                @csrf
+                <label for="comment" class="form-label">商品へのコメント</label>
+                <textarea name="comment" id="comment" class="comment-textarea"></textarea>
+                <button type="submit" class="btn-submit">コメントを送信する</button>
+            </form>
+        </section>
     </div>
 </div>
-
 @endsection
