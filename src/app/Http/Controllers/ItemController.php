@@ -7,6 +7,7 @@ use App\Http\Requests\RegisterRequest; // これを使います
 use App\Http\Requests\LoginRequest;
 use App\Models\User;
 use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 

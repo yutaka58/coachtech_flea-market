@@ -23,4 +23,10 @@ class Product extends Model
         return $this->hasOne(Order::class);
     }
 
+    public function categories()
+    {
+        // 商品が複数のカテゴリーを持つ場合（多対多）
+        return $this->belongsToMany(Category::class);
+    }
+
 }

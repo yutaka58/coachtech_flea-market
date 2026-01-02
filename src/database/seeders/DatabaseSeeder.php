@@ -14,14 +14,24 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\User::create([
-            'name' => 'test',
-            'email' => 'test@example.com',
-            'password' => Hash::make('11111111'),
+        // 1. カテゴリーなどのマスターデータ（商品が依存するもの）
+        $this->call([
+            CategoryTableSeeder::class,
         ]);
 
-        // 2. その後に商品を作成する
-        $this->call(ProductTableSeeder::class);
-        $this->call(OrderTableSeeder::class);
+        // 2. テストユーザー（重複を避ける書き方）
+        \App\Models\User::firstOrCreate(
+            ['email' => 'test@example.com'],
+            [
+                'name' => 'test',
+                'password' => bcrypt('password'),
+            ]
+        );
+
+        // 3. その他、商品や注文など
+        $this->call([
+            ProductTableSeeder::class,
+            OrderTableSeeder::class,
+        ]);
     }
 }

@@ -53,8 +53,10 @@
                 <div class="meta-item">
                     <dt>カテゴリー</dt>
                     <dd class="tag-group">
-                        <span class="category-tag">洋服</span>
-                        <span class="category-tag">メンズ</span>
+                        {{-- 商品に紐づくカテゴリーをループで回して表示 --}}
+                        @foreach($product->categories as $category)
+                            <span class="category-tag">{{ $category->name }}</span>
+                        @endforeach
                     </dd>
                 </div>
                 <div class="meta-item">
