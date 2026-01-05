@@ -13,7 +13,9 @@
 <body>
     <div class="header">
         <div class="header-content">
-            <img src="{{ asset('images/COACHTECHヘッダーロゴ.png') }}" alt="COACHTECHロゴ">
+            <a class="top-page" href="/">
+                <img src="{{ asset('images/COACHTECHヘッダーロゴ.png') }}" alt="COACHTECHロゴ">
+            </a>
         </div>
     </div>
     

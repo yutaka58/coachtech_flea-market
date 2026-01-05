@@ -68,33 +68,37 @@ class ItemController extends Controller
 
     public function index(Request $request)
     {
-        // 1. 現在のタブを取得（デフォルトは 'recommend'）
         $tab = $request->query('tab', 'recommend');
+        $keyword = $request->query('keyword'); // 検索窓からの値
 
-        // 現在ログインしているユーザーのIDを取得
-        $userId = Auth::id();
+        // 1. まずは「全商品」をベースにする
+        $query = Product::query();
 
-        if ($tab === 'mylist') {
-            // 2. マイリスト：ログイン中のユーザーがいいねした商品のみ取得
-            // ※ Likeモデルや多対多のリレーションが必要です
-            $products = Auth::check() 
-                ? Auth::user()->favoriteItems 
-                : collect(); // 未ログインなら空
-        } else {
-            // おすすめ：全商品から「自分が出品した商品」を除外
-            $query = Product::with('order');
-
-            if (Auth::check()) {
-                // ログインしている場合、seller_id（出品者ID）が自分以外の商品を取得
-                // ※カラム名が user_id の場合は書き換えてください
-                $query->where('user_id', '!=', $userId);
-            }
-
-            $products = $query->get();
+        // 2. 検索ワードがあれば、どのタブでも絞り込む
+        if (!empty($keyword)) {
+            $query->where('name', 'LIKE', "%{$keyword}%");
         }
 
-        return view('index', compact('products', 'tab'));
+        // 3. タブに応じて条件を追加
+        if ($tab === 'mylist') {
+            if (Auth::check()) {
+                // Userモデルで定義した favoriteItems リレーションを利用
+                $query->whereHas('favorites', function($q) {
+                    $q->where('user_id', Auth::id());
+                });
+            } else {
+                return redirect()->route('login'); // 未ログインならログインへ
+            }
+        } else {
+            // おすすめ：自分が出品したものを除外
+            if (Auth::check()) {
+                $query->where('user_id', '!=', Auth::id());
+            }
+        }
 
+        $products = $query->get();
+
+        return view('index', compact('products', 'tab', 'keyword'));
     }
 
     public function show($product_id)

@@ -12,18 +12,15 @@
             <!-- おすすめがリンク不要の場合[label]使用
             <label class="tab-item">おすすめ</label>
              -->
-            
-            {{-- おすすめボタン --}}
-            <button type="submit" name="tab" value="recommend" 
-                class="tab-item-button {{ $tab == 'recommend' ? 'active' : '' }}">
-                おすすめ
-            </button>
 
-            {{-- マイリストボタン --}}
-            <button type="submit" name="tab" value="mylist"
-                class="tab-item-button {{ $tab == 'mylist' ? 'active' : '' }}">
-                マイリスト
-            </button>
+            {{-- 現在の検索キーワードを保持 --}}
+            <input type="hidden" name="keyword" value="{{ request('keyword') }}">
+            
+            <a href="/?tab=recommend&keyword={{ request('keyword') }}"
+                class="tab-item {{ $tab == 'recommend' ? 'active' : '' }}">おすすめ</a>
+
+            <a href="/?tab=mylist&keyword={{ request('keyword') }}"
+                class="tab-item {{ $tab == 'mylist' ? 'active' : '' }}">マイリスト</a>
         </form>
     </div>
 

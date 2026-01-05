@@ -21,7 +21,7 @@
 }
 
 /* ボタンのスタイルをリセットしてタブに見せる */
-.tab-item-button {
+.tab-item {
     background: none;
     border: none;
     outline: none;
@@ -35,10 +35,9 @@
 }
 
 /* アクティブ（選択中）のスタイル */
-.tab-item-button.active {
+.tab-item.active {
     color: #ff0000;
     /* コーチテックカラー等 */
-
 }
 
 /* 商品一覧のグリッドレイアウト */

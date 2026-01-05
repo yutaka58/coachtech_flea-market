@@ -41,7 +41,7 @@
         <div class="meta-list">
             <div class="meta-item">
                 <dt class="meta-item__purchase">商品代金</dt>
-                <dd class="meta-item__payment">¥{{ $product->price }}</dd>
+                <dd class="meta-item__payment">¥{{ number_format($product->price) }}</dd>
             </div>
         </div>
         <div class="meta-list">
