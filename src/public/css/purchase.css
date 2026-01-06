@@ -11,6 +11,10 @@
 
 .right-content {
     flex: 1;
+    position: sticky;
+    top: 60px;
+    /* ヘッダーの高さ分などを考慮 */
+    height: fit-content;
 }
 
 /* 修正後のCSS */
@@ -46,12 +50,22 @@
 }
 
 .product-header {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: bold;
     margin-left: 20px;
+    display: flex;
+    justify-content: space-between;
 }
 
 .payment-method {
+    width: 300px;
+    padding: 5px;
+    margin-left: 80px;
+    margin-bottom: 30px;
+}
+
+.post-code,
+.address-building {
     width: 300px;
     padding: 5px;
     margin-left: 80px;
@@ -75,7 +89,6 @@
     text-align: center;
 }
 
-
 .btn-primary {
     background-color: red;
     width: 85%;
@@ -87,4 +100,10 @@
     font-weight: bold;
     margin-top: 50px;
     margin-left: 40px;
+}
+
+/* 未選択の時は少し薄くするなどの演出 */
+#display_payment_method {
+    font-weight: bold;
+    color: #333;
 }

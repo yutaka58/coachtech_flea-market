@@ -9,33 +9,33 @@
     {{-- 左側：商品画像 --}}
     <div class="product-visual">
         <div class="product-image-wrapper">
-            <img src="{{ asset($product->img_url) }}" alt="{{ $product->name }}" class="product-image">
+            <img src="{{ asset($item->img_url) }}" alt="{{ $item->name }}" class="product-image">
         </div>
     </div>
 
     {{-- 右側：商品詳細 --}}
     <div class="product-details">
         <div class="product-header">
-            <h1 class="product-name">{{ $product->name }}</h1>
-            <p class="product-brand">{{ $product->brand }}</p>
-            <p class="product-price">￥{{ number_format($product->price) }}<span>(税込)</span></p>
+            <h1 class="product-name">{{ $item->name }}</h1>
+            <p class="product-brand">{{ $item->brand }}</p>
+            <p class="product-price">￥{{ number_format($item->price) }}<span>(税込)</span></p>
         </div>
 
         <div class="product-actions">
             <div class="action-item">
-                <button class="icon-button btn-favorite" data-product-id="{{ $product->id }}">
-                    <img src="{{ asset($product->isFavoritedBy(auth()->user()) ? '/images/ハートロゴ_ピンク.png' : '/images/ハートロゴ_デフォルト.png') }}" id="favorite-icon" alt="いいね"></button>
-                <span class="count" id="favorite-count">{{ $product->favorites->count() }}</span>
+                <button class="icon-button btn-favorite" data-product-id="{{ $item->id }}">
+                    <img src="{{ asset($item->isFavoritedBy(auth()->user()) ? '/images/ハートロゴ_ピンク.png' : '/images/ハートロゴ_デフォルト.png') }}" id="favorite-icon" alt="いいね"></button>
+                <span class="count" id="favorite-count">{{ $item->favorites->count() }}</span>
 
             </div>
             <div class="action-item">
                 <span class="icon-logo"><img src="{{ asset('/images/ふきだしロゴ.png') }}" alt="コメント"></span>
-                <span class="count" id="comment-count">{{ $product->comments?->count() ?? 0 }}</span>
+                <span class="count" id="comment-count">{{ $item->comments?->count() ?? 0 }}</span>
             </div>
         </div>
 
         <div class="purchase-action">
-            <a href="/purchase/{{ $product->id }}" class="btn-purchase">購入手続きへ</a>
+            <a href="/purchase/{{ $item->id }}" class="btn-purchase">購入手続きへ</a>
         </div>
 
         {{-- 各セクション --}}
@@ -56,7 +56,7 @@
                     <dt>カテゴリー</dt>
                     <dd class="tag-group">
                         {{-- 商品に紐づくカテゴリーをループで回して表示 --}}
-                        @foreach($product->categories as $category)
+                        @foreach($item->categories as $category)
                             <span class="category-tag">{{ $category->name }}</span>
                         @endforeach
                     </dd>
@@ -69,9 +69,9 @@
         </section>
 
         <section class="info-section">
-            <h2 class="section-title">コメント({{ $product->comments->count() }})</h2>
+            <h2 class="section-title">コメント({{ $item->comments->count() }})</h2>
     
-            @foreach($product->comments as $comment)
+            @foreach($item->comments as $comment)
                 <div class="comment-item">
                     <div class="user-info">
                         <div class="user-avatar">
@@ -90,7 +90,7 @@
         </section>
 
         <section class="info-section">
-            <form action="/item/{{ $product->id }}/comment" method="POST" class="comment-form">
+            <form action="/item/{{ $item->id }}/comment" method="POST" class="comment-form">
                 @csrf
                 <label for="comment" class="form-label">商品へのコメント</label>
                 <textarea name="comment" id="comment" class="comment-textarea"></textarea>

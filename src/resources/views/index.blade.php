@@ -25,19 +25,19 @@
     </div>
 
     <div class="item-grid">
-        @forelse ($products as $product)
+        @forelse ($items as $item)
             <div class="item-card">
-                <a href="/item/{{ $product->id }}">
+                <a href="/item/{{ $item->id }}">
                     <div class="item-image">
-                        <img class="image" src="{{ asset($product->img_url) }}" alt="{{ $product->name }}">
+                        <img class="image" src="{{ asset($item->img_url) }}" alt="{{ $item->name }}">
                         {{-- ここに SOLD 表示を追加 --}}
-                        @if($product->order)
+                        @if($item->order)
                             <div class="sold-label">
                                 <span>SOLD</span>
                             </div>
                         @endif
                     </div>
-                    <p class="item-name">{{ $product->name }}</p>
+                    <p class="item-name">{{ $item->name }}</p>
                 </a>
             </div>
         @empty

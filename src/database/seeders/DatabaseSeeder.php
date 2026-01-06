@@ -30,7 +30,7 @@ class DatabaseSeeder extends Seeder
 
         // 3. その他、商品や注文など
         $this->call([
-            ProductTableSeeder::class,
+            ItemTableSeeder::class,
             OrderTableSeeder::class,
         ]);
     }

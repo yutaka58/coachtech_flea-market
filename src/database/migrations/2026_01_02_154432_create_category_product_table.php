@@ -16,7 +16,7 @@ class CreateCategoryProductTable extends Migration
         Schema::create('category_product', function (Blueprint $table) {
             $table->id();
             // foreignId を使うことで、関連するテーブルのIDであることを明示します
-            $table->foreignId('product_id')->constrained()->onDelete('cascade');
+            $table->foreignId('item_id')->constrained()->onDelete('cascade');
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });

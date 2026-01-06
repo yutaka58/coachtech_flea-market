@@ -45,12 +45,7 @@ class User extends Authenticatable
     public function favoriteItems()
     {
         // favoritesテーブルを中間テーブルとして、Itemモデルと紐付け
-        return $this->belongsToMany(Product::class, 'favorites');
-    }
-
-    public function favorites()
-    {
-        return $this->belongsToMany(Product::class, 'favorites');
+        return $this->belongsToMany(Item::class, 'favorites');
     }
 
 }

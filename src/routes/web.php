@@ -43,6 +43,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/products/{item_id}/favorite', [FavoriteController::class, 'toggle']);
 
     Route::get('/purchase/{item_id}', [ItemController::class, 'purchase']);
+    Route::post('/purchase/{item_id}', [ItemController::class, 'postpurchase']);
+
     Route::post('/item/{item_id}/comment', [CommentController::class, 'store']);
 });
 

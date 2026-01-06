@@ -15,7 +15,7 @@ class OrderTableSeeder extends Seeder
     {
         \App\Models\Order::create([
             'user_id' => 1,      // 存在するユーザーID
-            'product_id' => 1,   // SOLDにしたい商品のID
+            'item_id' => 1,   // SOLDにしたい商品のID
         ]);
     }
 }

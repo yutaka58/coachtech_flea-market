@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\RegisterRequest; // これを使います
 use App\Http\Requests\LoginRequest;
 use App\Models\User;
-use App\Models\Product;
+use App\Models\Item;
 use App\Models\Category;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -72,7 +72,7 @@ class ItemController extends Controller
         $keyword = $request->query('keyword'); // 検索窓からの値
 
         // 1. まずは「全商品」をベースにする
-        $query = Product::query();
+        $query = Item::query();
 
         // 2. 検索ワードがあれば、どのタブでも絞り込む
         if (!empty($keyword)) {
@@ -96,18 +96,18 @@ class ItemController extends Controller
             }
         }
 
-        $products = $query->get();
+        $items = $query->get();
 
-        return view('index', compact('products', 'tab', 'keyword'));
+        return view('index', compact('items', 'tab', 'keyword'));
     }
 
-    public function show($product_id)
+    public function show($item_id)
     {
         // 商品を取得。見つからなければ404エラーを出す
-        $product = Product::with(['order'])->findOrFail($product_id);
+        $item = Item::with(['order'])->findOrFail($item_id);
     
-        // 未認証ユーザーでも $product は取得できるので、そのままビューへ渡す
-        return view('item', compact('product'));
+        // 未認証ユーザーでも $item は取得できるので、そのままビューへ渡す
+        return view('item', compact('item'));
     }
 
     //ログアウト機能
@@ -123,7 +123,7 @@ class ItemController extends Controller
     //検索機能
     public function getSearch(Request $request)
     {
-        $query = Product::query();
+        $query = Item::query();
 
     if ($request->filled('keyword'))
         {
@@ -131,18 +131,21 @@ class ItemController extends Controller
             $query->where('name','like','%'.$keyword.'%');
         }
 
-        $products = $query->get();
+        $items = $query->get();
         $tab = 'recommend';
-        return view('index')->with(compact('products','tab'));
+        return view('index')->with(compact('items','tab'));
     }
 
     public function purchase($item_id)
     {
         // 指定されたIDの商品データを取得
-        $product = \App\Models\Product::findOrFail($item_id);
+        $item = \App\Models\Item::findOrFail($item_id);
+
+        // 初期値として null や空文字を設定して渡す
+        $payment_id = null;
 
         // 購入画面（purchase.blade.php）を表示
-        return view('purchase', compact('product'));
+        return view('purchase', compact('item', 'payment_id'));
     }
 
 }
