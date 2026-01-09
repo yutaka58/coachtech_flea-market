@@ -149,6 +149,7 @@ class ItemController extends Controller
         return view('purchase', compact('item', 'payment_id'));
     }
 
+    // 購入実装
     public function storepurchase(request $request, $item_id)
     {
         Order::create([
@@ -158,5 +159,12 @@ class ItemController extends Controller
 
         return redirect('/');
     }
+
+    public function mypage(Request $request)
+    {
+        $user = Auth::user();
+        return view('mypage', compact('user'));
+    }
+
 
 }

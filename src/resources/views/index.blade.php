@@ -8,7 +8,7 @@
 
 <div class="top-page__content">
     <div class="tab-menu">
-        <form action="/?tab=mylist" method="GET" class="tab-form">
+        <form action="/?tab=mylist" method="get" class="tab-form">
             <!-- おすすめがリンク不要の場合[label]使用
             <label class="tab-item">おすすめ</label>
              -->

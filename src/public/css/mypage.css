@@ -1,0 +1,38 @@
+.tab-menu {
+    border-bottom: 3px solid #ccc;
+    padding: 30px 60px 0 60px;
+}
+
+.tab-item {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    position: relative;
+    padding: 0 30px;
+}
+
+.user-info,
+.mypage-profile {
+    margin-bottom: 30px;
+}
+
+.user-avatar {
+    width: 100px;
+    height: 100px;
+    background-color: #ccc;
+    border-radius: 50%;
+    margin: 0 50px;
+}
+
+.user-name {
+    font-weight: bold;
+}
+
+.mypage-btn {
+    background-color: #fff;
+    color: red;
+    border-color: red;
+    border-radius: 5px;
+    padding: 10px 50px;
+    font-weight: bold;
+}
