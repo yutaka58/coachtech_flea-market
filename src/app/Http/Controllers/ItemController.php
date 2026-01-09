@@ -7,6 +7,7 @@ use App\Http\Requests\RegisterRequest; // これを使います
 use App\Http\Requests\LoginRequest;
 use App\Models\User;
 use App\Models\Item;
+use App\Models\Order;
 use App\Models\Category;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -146,6 +147,16 @@ class ItemController extends Controller
 
         // 購入画面（purchase.blade.php）を表示
         return view('purchase', compact('item', 'payment_id'));
+    }
+
+    public function storepurchase(request $request, $item_id)
+    {
+        Order::create([
+            'user_id' => auth()->id(),
+            'item_id' => $item_id,
+        ]);
+
+        return redirect('/');
     }
 
 }

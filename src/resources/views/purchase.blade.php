@@ -54,14 +54,17 @@
             </div>
         </dl>
         <div class="purchase-btn">
-            <form action="/purchase/{{ $item->id }}" method="post">
-                {{-- ここに支払い方法の選択や住所確認などのフォームを実装していきます --}}
-                <button class="btn-primary">購入する</button>
+            <form action="/purchase/{{ $item->id }}" method="post" id="purchase-form">
+                @csrf
+                <input type="hidden" name="payment-method" id="hidden-payment__method">
+                <button class="btn-primary" type="submit">購入する</button>
             </form>
         </div>
     </div>
 </div>
 
+
+<!-- 左で選択した支払い方法を右にリアルタイムで表示 -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const selectElement = document.getElementById('payment_method_select');
@@ -74,6 +77,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // 右側の表示箇所を書き換える
         displayElement.textContent = selectedText;
+        hiddenInput.value = selectedText;
     });
 });
 </script>
