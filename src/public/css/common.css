@@ -16,11 +16,11 @@
 
 /* 2. 検索フォームエリア（中央） */
 .search-form {
-    flex: 2;
+    flex: 1.5;
     /* 中央を広く取る（比率2） */
     display: flex;
-    justify-content: center;
-    margin: 0 20px;
+    justify-content: end;
+
 }
 
 .search-form__keyword-input {
