@@ -49,8 +49,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/mypage', [ItemController::class, 'mypage']);
 
-    Route::get('/purchase/address/i{tem_id}' [ItemController::class, 'address']);
-    
+    Route::get('/purchase/address/{item_id}', [ItemController::class, 'address']);
+
 });
 
 

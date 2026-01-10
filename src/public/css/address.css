@@ -1,0 +1,78 @@
+.address-form__content {
+    margin: 0 auto;
+    padding: 30px 15px;
+    max-width: 1230px;
+}
+
+.address-form__heading {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.form {
+    margin: 0 auto;
+    width: 50%;
+    text-align: center;
+}
+
+.form__group-title {
+    text-align: left;
+    margin-top: 40px;
+}
+
+.form__label--item {
+    font-weight: bold;
+}
+
+.form__error {
+    height: 20px;
+    color: #ff0000;
+    text-align: left;
+}
+
+.form__input--text input {
+    padding: 10px;
+    width: 100%;
+    height: 40px;
+    border: 1px solid;
+    border-radius: 3px;
+    appearance: none;
+    display: block;
+}
+
+.form__button {
+    margin-top: 80px;
+}
+
+.form__button-submit {
+    padding: 5px;
+    width: 100%;
+    height: 40px;
+    border: none;
+    border-radius: 3px;
+    background: #ff0000;
+    color: #fff;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.login__link {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.error-message {
+    text-align: left;
+    /* 文字を左寄せにする */
+    color: #ff0000;
+    /* 赤色 */
+    font-size: 14px;
+    /* 必要に応じてサイズ調整 */
+    margin-top: 5px;
+    /* 入力欄との隙間 */
+    width: 100%;
+    /* 幅いっぱいに広げて左端を基準にする */
+    display: block;
+    /* 確実にブロック要素として扱う */
+}

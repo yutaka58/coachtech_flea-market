@@ -197,4 +197,9 @@ class ItemController extends Controller
         return redirect('/');
     }
 
+    public function address(Request $request)
+    {
+        return view('address');
+    }
+
 }
