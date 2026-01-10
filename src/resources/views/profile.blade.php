@@ -11,8 +11,9 @@
         <div class="profile-form__heading">
             <h1>プロフィール設定</h1>
         </div>
-        <form class="form" action="/mypage/profile" method="post" novalidate>
+        <form class="form" action="/mypage/profile" method="post" enctype="multipart/form-data">
             @csrf
+            {{-- 画像保存には enctype="multipart/form-data" が必須 --}}
 
             <div class="profile-group">
                 <div class="profile-image-section">
@@ -22,7 +23,7 @@
         
                     <label class="image-upload-label">
                         画像を選択する
-                        <input type="file" name="image" id="image-input" accept="image/*" style="display: none;">
+                        <input class="select-img" type="file" name="image" id="image-input" accept="image/*">
                     </label>
                 </div>
             </div>
@@ -81,9 +82,21 @@
             </div>
 
             <div class="form__button">
-                <button class="form__button-update" type="update">更新する</button>
+                <button class="form__button-update" type="submit">更新する</button>
             </div>
         </form>
     </div>
+
+
+    {{-- プレビュー機能用のJavaScriptを追加 --}}
+<script>
+document.getElementById('image-input').addEventListener('change', function(e) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        document.getElementById('preview').src = e.target.result;
+    }
+    reader.readAsDataURL(e.target.files[0]);
+});
+</script>
 
 @endsection

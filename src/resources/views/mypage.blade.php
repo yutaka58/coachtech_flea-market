@@ -12,7 +12,7 @@
         <form action="/mypage" method="get" class="user-form">
             <div class="user-info">
                 <div class="user-avatar">
-                    <img class="user-avatar__img" src="{{ $user->image ? asset('storage/' . $user->image) : asset('images/default-user.png') }}"></img>
+                    <img class="user-avatar__img" src="{{ $user->image ? asset('storage/' . $user->image) : asset('images/default-user.png') }}">
                     <span class="user-avatar__name">{{ $user?->name }}</span>
                 </div>
             </div>
@@ -22,30 +22,33 @@
                 </a>
             </div>
         </form>
-        <form class="tab-form" action="">
-            <a href="" class="tab-item">出品した商品</a>
-            <a href="" class="tab-item">購入した商品</a>
-        </form>
+        <div class="tab-items">
+            <a href="/mypage?tab=sell" class="tab-item {{ $tab == 'sell' ? 'active' : '' }}">出品した商品</a>
+            <a href="/mypage?tab=buy" class="tab-item {{ $tab == 'buy' ? 'active' : '' }}">購入した商品</a>
+        </div>
     </div>
-    <div class="item-grid">
-        @forelse ($items as $item)
-            <div class="item-card">
-                <a href="/item/{{ $item->id }}">
-                    <div class="item-image">
-                        <img class="image" src="{{ asset($item->img_url) }}" alt="{{ $item->name }}">
-                        {{-- ここに SOLD 表示を追加 --}}
-                        @if($item->order)
-                            <div class="sold-label">
-                                <span>SOLD</span>
-                            </div>
-                        @endif
+    <div class="item-content">
+        @if($tab == 'sell')
+            {{-- 出品した商品の一覧 --}}
+            <div class="item-grid">
+                @foreach($sellItems as $item)
+                    <div class="item-card">
+                        <img class="item-img" src="{{ asset($item->img_url) }}">
+                        <p>{{ $item->name }}</p>
                     </div>
-                    <p class="item-name">{{ $item->name }}</p>
-                </a>
+                @endforeach
             </div>
-        @empty
-            <p>表示する商品がありません。</p>
-        @endforelse
+        @else
+            {{-- 購入した商品の一覧 --}}
+            <div class="item-grid">
+                @foreach($buyItems as $item)
+                    <div class="item-card">
+                        <img class="item-img" src="{{ asset($item->img_url) }}">
+                        <p>{{ $item->name }}</p>
+                    </div>
+                @endforeach
+            </div>
+        @endif
     </div>
 
 </div>

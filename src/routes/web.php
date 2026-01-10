@@ -48,6 +48,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/item/{item_id}/comment', [CommentController::class, 'store']);
 
     Route::get('/mypage', [ItemController::class, 'mypage']);
+
+    Route::get('/purchase/address/i{tem_id}' [ItemController::class, 'address']);
+    
 });
 
 

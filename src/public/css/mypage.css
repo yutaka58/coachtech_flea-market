@@ -38,16 +38,25 @@
     font-weight: bold;
 }
 
-.tab-form {
+.tab-items {
     display: flex;
-    gap: 50px;
-    margin: 5px 100px;
+    padding-left: 100px;
+    margin-top: 20px;
 }
 
 .tab-item {
     text-decoration: none;
     color: #333;
     font-weight: bold;
+    padding: 5px 30px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    gap: 50px;
+}
+
+.tab-item.active {
+    color: red;
 }
 
 /* 商品一覧のグリッドレイアウト */
@@ -55,15 +64,9 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 20px;
-    padding: 0 50px;
+    padding: 30px 50px;
 }
 
-.image {
+.item-img {
     width: 200px;
-}
-
-.item-image {
-    position: relative;
-    /* 子要素のSOLDラベルを絶対配置にするため */
-    overflow: hidden;
 }

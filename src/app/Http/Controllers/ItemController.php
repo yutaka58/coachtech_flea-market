@@ -163,8 +163,38 @@ class ItemController extends Controller
     public function mypage(Request $request)
     {
         $user = Auth::user();
-        return view('mypage', compact('user'));
+        // 現在のタブを取得
+        $tab = $request->query('tab', 'sell');
+        // 出品した商品を取得
+        $sellItems = Item::where('user_id', $user->id)->get();
+        // 購入した商品を取得(Orderモデル経由でItemを取得)
+        $buyItems = Item::whereHas('order', function($q) use($user) {
+            $q->where('user_id', $user->id);
+        })->get();
+
+        return view('mypage', compact('user', 'tab', 'sellItems', 'buyItems'));
     }
 
+    public function updateProfile(Request $request)
+    {
+        $user = Auth::user();
+
+        if ($request->hasFile('image')) {
+
+            // 古い画像があれば削除
+            if ($user->image) {
+                Storage::disk('public')->delete('$user->image');
+            }
+            // storage/app/public/profiles に保存される
+            $path = $request->file('image')->store('profiles', 'public');
+            $user->image = $path;
+        }
+
+        $user->name = $request->name;
+
+        $user->save();
+
+        return redirect('/');
+    }
 
 }
