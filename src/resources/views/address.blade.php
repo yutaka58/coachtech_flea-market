@@ -10,7 +10,7 @@
     <div class="address-form__heading">
         <h1>住所の変更</h1>
     </div>
-    <form class="form" action="/mypage" method="post">
+    <form class="form" action="/purchase/address/{{ $item->id }}" method="post">
         @csrf
 
         <div class="form__group">
@@ -19,7 +19,7 @@
             </div>
             <div class="form__group-content">
                 <div class="form__input--text">
-                    <input type="post_code" name="post_code" value="{{ old('post_code') }}" />
+                    <input type="post_code" name="post_code" value="{{ old('post_code', Auth::user()->post_code) }}" />
                 </div>
                 @error('post_code')
                     <div class="error-message" style="color: red;">{{ $message }}</div>
@@ -33,7 +33,7 @@
             </div>
             <div class="form__group-content">
                 <div class="form__input--text">
-                    <input type="address" name="address" value="{{ old('address') }}" />
+                    <input type="address" name="address" value="{{ old('address', Auth::user()->address) }}" />
                 </div>
                 @error('address')
                     <div class="error-message" style="color: red;">{{ $message }}</div>
@@ -47,7 +47,7 @@
             </div>
             <div class="form__group-content">
                 <div class="form__input--text">
-                    <input type="building" name="building" value="{{ old('building') }}"/>
+                    <input type="building" name="building" value="{{ old('building', Auth::user()->building) }}"/>
                 </div>
                 @error('building')
                     <div class="error-message" style="color: red;">{{ $message }}</div>

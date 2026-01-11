@@ -31,12 +31,12 @@
         <div class="product-group">
             <div class="product-details">
                 <p class="product-header">配送先
-                    <a class="product-address__change" href="/purchase/address/{item_id}" >変更する</a>
+                    <a class="product-address__change" href="/purchase/address/{{ $item->id }}" >変更する</a>
                 </p>
             </div>
             <div class="product-details">
-                <p class="post-code">郵便番号が入る</p>
-                <p class="address-building">建物名が入る</p>
+                <p class="post-code">〒 {{ Auth::user()->post_code }}</p>
+                <p class="address-building">{{ Auth::user()->address }}{{ Auth::user()->building }}</p>
             </div>
         </div>
     </div>
@@ -77,6 +77,8 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // 右側の表示箇所を書き換える
         displayElement.textContent = selectedText;
+
+        const hiddenInput = document.getElementById('hidden-payment__method');
         hiddenInput.value = selectedText;
     });
 });

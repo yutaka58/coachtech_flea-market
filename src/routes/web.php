@@ -42,14 +42,15 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/products/{item_id}/favorite', [FavoriteController::class, 'toggle']);
 
-    Route::get('/purchase/{item_id}', [ItemController::class, 'purchase']);
+    Route::get('/purchase/{item_id}', [ItemController::class, 'purchase'])->name('purchase.show');
     Route::post('/purchase/{item_id}', [ItemController::class, 'storepurchase']);
 
     Route::post('/item/{item_id}/comment', [CommentController::class, 'store']);
 
     Route::get('/mypage', [ItemController::class, 'mypage']);
 
-    Route::get('/purchase/address/{item_id}', [ItemController::class, 'address']);
+    Route::get('/purchase/address/{item_id}', [ItemController::class, 'address'])->name('address.edit');
+    Route::post('/purchase/address/{item_id}', [ItemController::class, 'updateaddress']);
 
 });
 

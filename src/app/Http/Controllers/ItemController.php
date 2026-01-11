@@ -142,11 +142,13 @@ class ItemController extends Controller
         // 指定されたIDの商品データを取得
         $item = \App\Models\Item::findOrFail($item_id);
 
+        $user = Auth::user();
+
         // 初期値として null や空文字を設定して渡す
         $payment_id = null;
 
         // 購入画面（purchase.blade.php）を表示
-        return view('purchase', compact('item', 'payment_id'));
+        return view('purchase', compact('item', 'user', 'payment_id'));
     }
 
     // 購入実装
@@ -197,9 +199,24 @@ class ItemController extends Controller
         return redirect('/');
     }
 
-    public function address(Request $request)
+    public function address(Request $request, $item_id)
     {
-        return view('address');
+        $item = Item::findOrFail($item_id);
+        return view('address', compact('item'));
+    }
+
+    public function updateaddress(Request $request, $item_id)
+    {
+        $user = Auth::user();
+        $item = Item::findOrFail($item_id);
+
+        $user->post_code = $request->post_code;
+        $user->address = $request->address;
+        $user->building = $request->building;
+        $user->save();
+
+        Auth::setUser($user);
+        return redirect()->route('purchase.show', ['item_id' => $item_id]);
     }
 
 }
