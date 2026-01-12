@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\RegisterRequest; // これを使います
 use App\Http\Requests\LoginRequest;
 use App\Models\User;
@@ -28,8 +29,6 @@ class ItemController extends Controller
     // ★重要：会員登録の保存処理
     public function postRegister(RegisterRequest $request) 
     {
-        // RegisterRequest が自動で入力チェックをしてくれます
-        
         // ユーザー作成
         $user = User::create([
             'name' => $request->name,
@@ -43,7 +42,7 @@ class ItemController extends Controller
 
         // 3. プロフィール設定画面へリダイレクト
         // /mypage/profile へのルートが web.php にあることを確認してください
-        return redirect('/mypage/profile')->with('success', '会員登録が完了しました。プロフィールを設定してください。');
+        return redirect('/mypage/profile');
     }
 
     // ログイン処理（簡易版）
@@ -137,6 +136,7 @@ class ItemController extends Controller
         return view('index')->with(compact('items','tab'));
     }
 
+    // 購入画面を表示用
     public function purchase($item_id)
     {
         // 指定されたIDの商品データを取得
@@ -162,6 +162,7 @@ class ItemController extends Controller
         return redirect('/');
     }
 
+    // マイページ表示用
     public function mypage(Request $request)
     {
         $user = Auth::user();
@@ -177,6 +178,7 @@ class ItemController extends Controller
         return view('mypage', compact('user', 'tab', 'sellItems', 'buyItems'));
     }
 
+    // プロフィール変更用
     public function updateProfile(Request $request)
     {
         $user = Auth::user();
@@ -193,18 +195,23 @@ class ItemController extends Controller
         }
 
         $user->name = $request->name;
+        $user->post_code = $request->post_code;
+        $user->address = $request->address;
+        $user->building = $request->building;
 
         $user->save();
 
         return redirect('/');
     }
 
+    // 住所変更画面を表示
     public function address(Request $request, $item_id)
     {
         $item = Item::findOrFail($item_id);
         return view('address', compact('item'));
     }
 
+    // 住所変更の更新
     public function updateaddress(Request $request, $item_id)
     {
         $user = Auth::user();

@@ -15,11 +15,7 @@
                     <img class="user-avatar__img" src="{{ $user->image ? asset('storage/' . $user->image) : asset('images/default-user.png') }}">
                     <span class="user-avatar__name">{{ $user?->name }}</span>
                 </div>
-            </div>
-            <div class="user-info">
-                <a class="mypage-link" href="/mypage/profile">
-                    <button class="mypage-btn">プロフィールを編集</button>
-                </a>
+                <a class="mypage-btn-link" href="/mypage/profile">プロフィールを編集</a>
             </div>
         </form>
         <div class="tab-items">

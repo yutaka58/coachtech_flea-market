@@ -10,8 +10,12 @@
 }
 
 .user-info {
-    margin: auto 50px;
-    padding-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+    border-bottom: none;
 }
 
 .user-avatar__img {
@@ -29,13 +33,15 @@
     margin: auto 100px;
 }
 
-.mypage-btn {
-    background-color: #fff;
+.mypage-btn-link {
+    display: inline-block;
+    padding: 10px 30px;
+    border: 2px solid red;
     color: red;
-    border-color: red;
-    border-radius: 5px;
-    padding: 10px 50px;
+    text-decoration: none;
+    border-radius: 4px;
     font-weight: bold;
+    transition: 0.3s;
 }
 
 .tab-items {
