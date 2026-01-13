@@ -226,4 +226,10 @@ class ItemController extends Controller
         return redirect()->route('purchase.show', ['item_id' => $item_id]);
     }
 
+    // 出品画面を表示
+    public function getsell(Request $request)
+    {
+        return view('sell');
+    }
+
 }

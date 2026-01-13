@@ -36,7 +36,7 @@
             </div>
             <div class="product-details">
                 <p class="post-code">〒 {{ Auth::user()->post_code }}</p>
-                <p class="address-building">{{ Auth::user()->address }}{{ Auth::user()->building }}</p>
+                <p class="address-building">{{ Auth::user()->address }}　　{{ Auth::user()->building }}</p>
             </div>
         </div>
     </div>

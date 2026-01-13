@@ -66,10 +66,13 @@
 
 .post-code,
 .address-building {
-    width: 300px;
-    padding: 5px;
-    margin-left: 80px;
+    width: 100%;
+    margin-left: 60px;
     margin-bottom: 10px;
+}
+
+.product-address__change {
+    text-decoration: none;
 }
 
 .meta-item {
@@ -91,7 +94,7 @@
 
 .btn-primary {
     background-color: red;
-    width: 85%;
+    width: 380px;
     color: white;
     border-color: red;
     padding: 10px;
