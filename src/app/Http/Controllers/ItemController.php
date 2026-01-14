@@ -227,9 +227,22 @@ class ItemController extends Controller
     }
 
     // 出品画面を表示
-    public function getsell(Request $request)
+    public function exhibition(Request $request)
     {
-        return view('sell');
+        $user = Auth::user();
+
+        if ($request->hasFile('image')) {
+
+            // 古い画像があれば削除
+            if ($user->image) {
+                Storage::disk('public')->delete('$user->image');
+            }
+            // storage/app/public/profiles に保存される
+            $path = $request->file('image')->store('profiles', 'public');
+            $user->image = $path;
+        }
+
+        return view('exhibition', compact('user'));
     }
 
 }

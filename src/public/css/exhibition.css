@@ -9,14 +9,38 @@
     text-align: center;
 }
 
+/* 画像プレビューの調整 */
+.image-preview {
+    position: absolute;
+    /* 画像を背景のように扱う */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    /* 余白を消すと綺麗に収まります */
+}
+
+.image-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* 画像の比率を保ったまま枠に収める */
+}
+
 .image-upload-label {
-    padding: 5px 20px;
+    /* position: absolute; は削除するか、中央配置を維持する設定にします */
+    padding: 8px 25px;
     border: 1px solid #ff4b2b;
     color: #ff4b2b;
     border-radius: 5px;
     cursor: pointer;
     font-weight: bold;
     transition: 0.3s;
+    background-color: #fff;
+    /* 背景を白にすると画像と重なっても見やすい */
+    z-index: 10;
+    /* 画像より手前に表示 */
 }
 
 .image-upload-label:hover {
@@ -35,9 +59,22 @@
 }
 
 .form-grid {
-    border: 1px dashed;
+    border: 1px dashed #ccc;
+    /* 枠線を見やすく */
     border-radius: 5px;
-    padding: 50px 50px;
+    width: 100%;
+    min-height: 150px;
+    /* 高さを少し確保 */
+    position: relative;
+
+    /* 真ん中に配置するための設定 */
+    display: flex;
+    justify-content: center;
+    /* 左右中央 */
+    align-items: center;
+    /* 上下中央 */
+    flex-direction: column;
+    /* プレビュー画像とボタンを縦に並べる場合 */
 }
 
 .form__group-title {

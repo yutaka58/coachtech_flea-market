@@ -1,7 +1,7 @@
 @extends('layouts/app')
 
 @section('css')
-<link rel="stylesheet" href="{{ asset('css/sell.css') }}">
+<link rel="stylesheet" href="{{ asset('css/exhibition.css') }}">
 @endsection
 
 
@@ -12,7 +12,7 @@
         <div class="sell-form__heading">
             <h1>商品の出品</h1>
         </div>
-        <form class="form" action="/" method="post" novalidate>
+        <form class="form" action="/" method="post" enctype="multipart/form-data">
             @csrf
 
             <div class="form__group">
@@ -20,6 +20,9 @@
                     <span class="form__label--item">商品画像</span>
                 </div>
                 <div class="form-grid">
+                    <div class="image-preview">
+                        <img id="preview" src="{{ $user->image ? asset('storage/' . $user->image) : asset('images/default-user.png') }}">
+                    </div>
                     <label class="image-upload-label">
                         画像を選択する
                         <input class="select-img" type="file" name="image" id="image-input" accept="image/*">
@@ -96,5 +99,16 @@
             </div>
         </form>
     </div>
+
+<script>
+document.getElementById('image-input').addEventListener('change', function(e) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        document.getElementById('preview').src = e.target.result;
+    }
+    reader.readAsDataURL(e.target.files[0]);
+});
+</script>
+
 
 @endsection

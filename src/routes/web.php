@@ -52,7 +52,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/purchase/address/{item_id}', [ItemController::class, 'address'])->name('address.edit');
     Route::post('/purchase/address/{item_id}', [ItemController::class, 'updateaddress']);
 
-    Route::get('/sell', [ItemController::class, 'getsell']);
+    Route::get('/exhibition', [ItemController::class, 'exhibition']);
 
 });
 
