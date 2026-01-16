@@ -142,18 +142,33 @@ class ItemController extends Controller
         // 指定されたIDの商品データを取得
         $item = \App\Models\Item::findOrFail($item_id);
 
+        $item = Item::findOrFail($item_id);
         $user = Auth::user();
 
         // 初期値として null や空文字を設定して渡す
         $payment_id = null;
 
+        // 売り切れ判定(Orderモデルに紐づいているか)
+        $isSoldOut = Order::where('item_id', $item_id)->exists();
+
+        if ($isSoldOut) {
+            return redirect('/');
+        }
+
         // 購入画面（purchase.blade.php）を表示
-        return view('purchase', compact('item', 'user', 'payment_id'));
+        return view('purchase', compact('item', 'user', 'payment_id', 'payment_id'));
     }
 
     // 購入実装
     public function storepurchase(request $request, $item_id)
     {
+        $alreadyPurchased = Order::where('item_id', $item_id)->exists();
+
+        if ($alreadyPurchased) {
+            // 既に売り切れている場合はリダイレクトされる
+            return redirect()->back();
+        }
+
         Order::create([
             'user_id' => auth()->id(),
             'item_id' => $item_id,

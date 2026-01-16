@@ -35,7 +35,14 @@
         </div>
 
         <div class="purchase-action">
-            <a href="/purchase/{{ $item->id }}" class="btn-purchase">購入手続きへ</a>
+            {{-- $item->order(リレーション)、あたは商品のステータスで判定 --}}
+            @if($item->order)
+                {{-- 売り切れの場合：aタグではなくspanなどでボタン風に表示 --}}
+                <span class="btn-purchase btn-disabled">売り切れ</span>
+            @else
+                {{-- 在庫がある場合：通常のリンク --}}
+                <a href="/purchase/{{ $item->id }}" class="btn-purchase">購入手続きへ</a>
+            @endif
         </div>
 
         {{-- 各セクション --}}
