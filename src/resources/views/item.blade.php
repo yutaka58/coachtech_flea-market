@@ -104,7 +104,11 @@
                 @error('comment')
                     <p style="color: red">{{ $message }}</p>
                 @enderror
-                <button type="submit" class="btn-submit">コメントを送信する</button>
+                @if($item->order)
+                    <span class="btn-submit btn-disabled">コメントを送信する</span>
+                @else
+                    <button type="submit" class="btn-submit">コメントを送信する</button>
+                @endif
             </form>
         </section>
     </div>

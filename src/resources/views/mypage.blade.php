@@ -19,12 +19,12 @@
             </div>
         </form>
         <div class="tab-items">
-            <a href="/mypage?tab=sell" class="tab-item {{ $tab == 'sell' ? 'active' : '' }}">出品した商品</a>
-            <a href="/mypage?tab=buy" class="tab-item {{ $tab == 'buy' ? 'active' : '' }}">購入した商品</a>
+            <a href="/mypage?page=sell" class="tab-item {{ $page == 'sell' ? 'active' : '' }}">出品した商品</a>
+            <a href="/mypage?page=buy" class="tab-item {{ $page == 'buy' ? 'active' : '' }}">購入した商品</a>
         </div>
     </div>
     <div class="item-content">
-        @if($tab == 'sell')
+        @if($page == 'sell')
             {{-- 出品した商品の一覧 --}}
             <div class="item-grid">
                 @foreach($sellItems as $item)

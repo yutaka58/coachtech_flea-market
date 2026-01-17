@@ -156,13 +156,13 @@
     height: 40px;
     appearance: none;
     /* 標準の矢印を消す (モダンブラウザ) */
-    -webkit-appearance: none;
-    /* Safari/Chrome用 */
-    -moz-appearance: none;
-    /* Firefox用 */
     padding-right: 30px;
     /* 矢印と文字が重ならないように右側に余白を作る */
     /* その他背景色や枠線のスタイル */
+}
+
+.form__input--condition::selection {
+    background-color: grey;
 }
 
 .form__button {

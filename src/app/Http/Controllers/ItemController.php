@@ -182,7 +182,7 @@ class ItemController extends Controller
     {
         $user = Auth::user();
         // 現在のタブを取得
-        $tab = $request->query('tab', 'sell');
+        $page = $request->query('page', 'sell');
         // 出品した商品を取得
         $sellItems = Item::where('user_id', $user->id)->get();
         // 購入した商品を取得(Orderモデル経由でItemを取得)
@@ -190,7 +190,7 @@ class ItemController extends Controller
             $q->where('user_id', $user->id);
         })->get();
 
-        return view('mypage', compact('user', 'tab', 'sellItems', 'buyItems'));
+        return view('mypage', compact('user', 'page', 'sellItems', 'buyItems'));
     }
 
     // プロフィール変更用
