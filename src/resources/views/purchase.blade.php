@@ -42,7 +42,16 @@
             </div>
             <div class="product-details">
                 <p class="post-code">〒 {{ Auth::user()->post_code }}</p>
+                @error('post_code')
+                    <div class="error-message">{{ $message }}</div>
+                @enderror
                 <p class="address-building">{{ Auth::user()->address }}　　{{ Auth::user()->building }}</p>
+                @error('address')
+                    <div class="error-message">{{ $message }}</div>
+                @enderror
+                @error('building')
+                    <div class="error-message">{{ $message }}</div>
+                @enderror
             </div>
         </div>
     </div>
