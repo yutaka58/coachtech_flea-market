@@ -28,6 +28,10 @@
     
                     <option value="card" {{ $payment_id == 'card' ? 'selected' : '' }}>カード支払い</option>
                 </select>
+                @error('payment_method')
+                    <div class="error-message">{{ $message }}</div>
+                @enderror
+
             </div>
         </div>
         <div class="product-group">
@@ -58,7 +62,7 @@
         <div class="purchase-btn">
             <form action="/purchase/{{ $item->id }}" method="post" id="purchase-form">
                 @csrf
-                <input type="hidden" name="payment-method" id="hidden-payment__method">
+                <input type="hidden" name="payment_method" id="hidden_payment_method">
                 <button class="btn-primary" type="submit">購入する</button>
             </form>
         </div>
@@ -71,24 +75,28 @@
 document.addEventListener('DOMContentLoaded', function() {
     const select = document.getElementById('payment_method_select');
     const display = document.getElementById('display_payment_method');
-    const hiddenInput = document.getElementById('hidden-payment__method');
+    const hiddenInput = document.getElementById('hidden_payment_method'); // IDがアンダースコアになっているか確認
+    const form = document.getElementById('purchase-form');
 
-    function updateView(methodText, methodValue) {
-        if (methodValue !== "") {
+    // 表示と隠し入力を更新する共通関数
+    function updateView() {
+        const methodValue = select.value;
+        const methodText = select.options[select.selectedIndex].text;
+        
+        if (methodValue && methodValue !== "") {
             display.innerText = methodText;
-            hiddenInput.value = methodValue; // 購入用フォームのhidden値も更新
+            hiddenInput.value = methodValue; // ここでhiddenに値を確実にセット
         }
     }
 
-    // 初期表示
-    updateView(select.options[select.selectedIndex].text, select.value);
+    // 1. ページ読み込み時に実行（初期状態の反映）
+    updateView();
 
+    // 2. セレクトボックスが変わった時に実行（セッション保存）
     select.addEventListener('change', function() {
-        const methodValue = this.value;
-        const methodText = this.options[this.selectedIndex].text;
-        const url = "{{ route('payment.save_session', ['item_id' => $item->id]) }}";
+        updateView();
 
-        // セッション保存を実行
+        const url = "{{ route('payment.save_session', ['item_id' => $item->id]) }}";
         fetch(url, {
             method: 'POST',
             headers: {
@@ -96,19 +104,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 'X-Requested-With': 'XMLHttpRequest',
                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
             },
-            body: JSON.stringify({ payment_method: methodValue })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                // 保存に成功してから見た目を更新
-                updateView(methodText, methodValue);
-                console.log('支払い方法をセッションに保持しました');
-            }
-        })
-        .catch(error => console.error('Error:', error));
+            body: JSON.stringify({ payment_method: this.value })
+        });
+    });
+
+    // 3. 💡 【追加】送信ボタンが押された瞬間に最終確認
+    form.addEventListener('submit', function() {
+        updateView(); 
     });
 });
+
 </script>
 
 @endsection

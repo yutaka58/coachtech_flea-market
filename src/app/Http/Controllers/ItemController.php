@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use App\Http\Requests\RegisterRequest; // これを使います
+use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\LoginRequest;
+use App\Http\Requests\PurchaseRequest;
 use App\Models\User;
 use App\Models\Item;
 use App\Models\Order;
@@ -154,16 +155,14 @@ class ItemController extends Controller
         // ---------------------
 
         // 購入画面（purchase.blade.php）を表示
-        return response()
-            ->view('purchase', compact('item', 'user', 'payment_id'))
-            ->header('Cache-Control', 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
+        return response()->view('purchase', compact('item', 'user', 'payment_id'));
     }
 
     // 購入実装
-    public function storepurchase(Request $request, $item_id)
+    public function storepurchase(PurchaseRequest $request, $item_id)
     {
         // セッションから保存しておいた支払い方法を取得
-        $paymentMethod = session('payment_method');
+        $paymentMethod = $request->payment_method ?: session('payment_method');
 
         if (!$paymentMethod) {
             return redirect()->back()->with('error', '支払い方法を選択してください。');
