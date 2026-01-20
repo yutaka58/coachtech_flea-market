@@ -21,17 +21,19 @@
         <div class="product-group">
             <div class="product-details">
                 <p class="product-header">支払い方法</p>
-                <select class="payment-method select" name="payment_method" id="payment_method_select" >
-                    <option disabled selected>選択してください</option>
-                    <option value="konbini">コンビニ払い</option>
-                    <option value="card">カード支払い</option>
+                <select class="payment-method select" name="payment_method" id="payment_method_select">
+                    <option value="" disabled {{ is_null($payment_id) ? 'selected' : '' }} hidden>選択してください</option>
+    
+                    <option value="konbini" {{ $payment_id == 'konbini' ? 'selected' : '' }}>コンビニ払い</option>
+    
+                    <option value="card" {{ $payment_id == 'card' ? 'selected' : '' }}>カード支払い</option>
                 </select>
             </div>
         </div>
         <div class="product-group">
             <div class="product-details">
                 <p class="product-header">配送先
-                    <a class="product-address__change" href="/purchase/address/{{ $item->id }}" >変更する</a>
+                    <a class="product-address__change" href="/purchase/address/{{ $item->id }}">変更する</a>
                 </p>
             </div>
             <div class="product-details">
@@ -67,19 +69,44 @@
 <!-- 左で選択した支払い方法を右にリアルタイムで表示 -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const selectElement = document.getElementById('payment_method_select');
-    const displayElement = document.getElementById('display_payment_method');
+    const select = document.getElementById('payment_method_select');
+    const display = document.getElementById('display_payment_method');
+    const hiddenInput = document.getElementById('hidden-payment__method');
 
-    // セレクトボックスの値が変更された時に実行
-    selectElement.addEventListener('change', function() {
-        // 選択された option のテキストを取得
-        const selectedText = selectElement.options[selectElement.selectedIndex].text;
-        
-        // 右側の表示箇所を書き換える
-        displayElement.textContent = selectedText;
+    function updateView(methodText, methodValue) {
+        if (methodValue !== "") {
+            display.innerText = methodText;
+            hiddenInput.value = methodValue; // 購入用フォームのhidden値も更新
+        }
+    }
 
-        const hiddenInput = document.getElementById('hidden-payment__method');
-        hiddenInput.value = selectedText;
+    // 初期表示
+    updateView(select.options[select.selectedIndex].text, select.value);
+
+    select.addEventListener('change', function() {
+        const methodValue = this.value;
+        const methodText = this.options[this.selectedIndex].text;
+        const url = "{{ route('payment.save_session', ['item_id' => $item->id]) }}";
+
+        // セッション保存を実行
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({ payment_method: methodValue })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // 保存に成功してから見た目を更新
+                updateView(methodText, methodValue);
+                console.log('支払い方法をセッションに保持しました');
+            }
+        })
+        .catch(error => console.error('Error:', error));
     });
 });
 </script>

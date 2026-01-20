@@ -139,42 +139,60 @@ class ItemController extends Controller
     // 購入画面を表示用
     public function purchase($item_id)
     {
-        // 指定されたIDの商品データを取得
-        $item = \App\Models\Item::findOrFail($item_id);
-
         $item = Item::findOrFail($item_id);
         $user = Auth::user();
 
-        // 初期値として null や空文字を設定して渡す
-        $payment_id = null;
-
-        // 売り切れ判定(Orderモデルに紐づいているか)
+        // 売り切れ判定
         $isSoldOut = Order::where('item_id', $item_id)->exists();
-
         if ($isSoldOut) {
             return redirect('/');
         }
 
+        // --- 💡 ここを修正 ---
+        // セッションに保存された支払い方法を取得。なければ null
+        $payment_id = session('payment_method');
+        // ---------------------
+
         // 購入画面（purchase.blade.php）を表示
-        return view('purchase', compact('item', 'user', 'payment_id', 'payment_id'));
+        return response()
+            ->view('purchase', compact('item', 'user', 'payment_id'))
+            ->header('Cache-Control', 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
     }
 
     // 購入実装
-    public function storepurchase(request $request, $item_id)
+    public function storepurchase(Request $request, $item_id)
     {
-        $alreadyPurchased = Order::where('item_id', $item_id)->exists();
+        // セッションから保存しておいた支払い方法を取得
+        $paymentMethod = session('payment_method');
 
-        if ($alreadyPurchased) {
-            // 既に売り切れている場合はリダイレクトされる
-            return redirect()->back();
+        if (!$paymentMethod) {
+            return redirect()->back()->with('error', '支払い方法を選択してください。');
         }
 
-        Order::create([
+        \App\Models\Order::create([
             'user_id' => auth()->id(),
             'item_id' => $item_id,
+            'payment_method' => $paymentMethod, // DBのカラム名に合わせてください
         ]);
 
-        return redirect('/');
+        // 購入完了後はセッションを削除する
+        session()->forget('payment_method');
+
+        return redirect('/')->with('success', '購入が完了しました！');
+    }
+
+    public function savePaymentMethod(Request $request, $item_id)
+    {
+        // セッションに保存
+        session(['payment_method' => $request->payment_method]);
+
+        // AJAX(fetch)リクエストの場合はJSONを返す
+        if ($request->ajax()) {
+            return response()->json(['success' => true]);
+        }
+
+        // 普通のリクエストの場合は購入画面へ戻る
+       return redirect()->route('purchase.show', ['item_id' => $item_id]);
     }
 
     // マイページ表示用
@@ -229,15 +247,15 @@ class ItemController extends Controller
     // 住所変更の更新
     public function updateaddress(Request $request, $item_id)
     {
+        // ...住所を保存する処理（既存のコード）...
         $user = Auth::user();
-        $item = Item::findOrFail($item_id);
-
         $user->post_code = $request->post_code;
         $user->address = $request->address;
         $user->building = $request->building;
         $user->save();
 
-        Auth::setUser($user);
+        // 💡 重要：JSONを返すのではなく、購入画面へリダイレクトさせる
+        // これにより {"success": true} の画面には行かず、元の購入ページに戻ります
         return redirect()->route('purchase.show', ['item_id' => $item_id]);
     }
 

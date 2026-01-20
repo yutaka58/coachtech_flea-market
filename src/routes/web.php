@@ -51,6 +51,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/purchase/address/{item_id}', [ItemController::class, 'address'])->name('address.edit');
     Route::post('/purchase/address/{item_id}', [ItemController::class, 'updateaddress']);
+    Route::post('/purchase/payment/{item_id}', [ItemController::class, 'savePaymentMethod'])->name('payment.save_session');
 
     Route::get('/exhibition', [ItemController::class, 'exhibition']);
 
