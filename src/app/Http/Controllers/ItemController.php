@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\PurchaseRequest;
+use App\Http\Requests\AddressRequest;
 use App\Models\User;
 use App\Models\Item;
 use App\Models\Order;
@@ -244,7 +245,7 @@ class ItemController extends Controller
     }
 
     // 住所変更の更新
-    public function updateaddress(Request $request, $item_id)
+    public function updateaddress(AddressRequest $request, $item_id)
     {
         // ...住所を保存する処理（既存のコード）...
         $user = Auth::user();

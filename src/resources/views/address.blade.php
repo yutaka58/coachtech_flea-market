@@ -22,7 +22,7 @@
                     <input type="post_code" name="post_code" value="{{ old('post_code', Auth::user()->post_code) }}" />
                 </div>
                 @error('post_code')
-                    <div class="error-message" style="color: red;">{{ $message }}</div>
+                    <div class="error-message">{{ $message }}</div>
                 @enderror
             </div>
         </div>
@@ -49,9 +49,6 @@
                 <div class="form__input--text">
                     <input type="building" name="building" value="{{ old('building', Auth::user()->building) }}"/>
                 </div>
-                @error('building')
-                    <div class="error-message" style="color: red;">{{ $message }}</div>
-                @enderror
             </div>
         </div>
 

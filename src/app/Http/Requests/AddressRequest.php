@@ -13,7 +13,7 @@ class AddressRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,16 @@ class AddressRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'post_code' => 'required|max:8',
+            'address' => 'required',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'post_code.required' => '郵便番号を入力してください',
+            'address.required' => '住所を入力してください',
         ];
     }
 }
