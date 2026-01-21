@@ -40,8 +40,13 @@
                     <span class="form__label--item">カテゴリー</span>
                 </div>
                 <div class="form__group-content">
-                    <div class="form__input--text">
-                        <input type="email" name="email" value="{{ old('email') }}" />
+                    <div class="category-tag-container">
+                        @foreach($categories as $category)
+                            <label class="category-tag">
+                                <input type="checkbox" name="category_id" value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'checked' : '' }}>
+                                <span class="tag-label">{{ $category->name }}</span>
+                            </label>
+                        @endforeach
                     </div>
                 </div>
                 <div class="form__group-title">
@@ -69,7 +74,7 @@
                 </div>
                 <div class="form__group-content">
                     <div class="form__input--text">
-                        <input type="email" name="email" value="{{ old('email') }}" />
+                        <input type="name" name="name" value="{{ old('name') }}" />
                     </div>
                 </div>
                 <div class="form__group-title">
@@ -77,7 +82,7 @@
                 </div>
                 <div class="form__group-content">
                     <div class="form__input--text">
-                        <input type="email" name="email" value="{{ old('email') }}" />
+                        <input type="brand" name="brand" value="{{ old('brand') }}" />
                     </div>
                 </div>
                 <div class="form__group-title">
@@ -85,7 +90,7 @@
                 </div>
                 <div class="form__group-content">
                     <div class="form__input--explanation">
-                        <input type="email" name="email" value="{{ old('email') }}" />
+                        <input type="explanation" name="explanation" value="{{ old('explanation') }}" />
                     </div>
                 </div>
                 <div class="form__group-title">
@@ -93,7 +98,7 @@
                 </div>
                 <div class="form__group-content">
                     <div class="form__input--text">
-                        <input type="email" name="email" value="￥" />
+                        <input type="price" name="price" value="￥{{ old('price') }}" />
                     </div>
                 </div>
             </div>

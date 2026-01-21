@@ -13,7 +13,7 @@ class ProfileRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,23 @@ class ProfileRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'image' => 'required|image|mines:jpeg,png',
+            'name' => 'required|max:20',
+            'post_code' => 'required|max:8',
+            'address' => 'required',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'image.required' => '画像を選択してください',
+            'image.mines:jpeg,png' => '「.jpeg」または「.png」形式でアップロードしてください',
+            'name.required' => 'ユーザー名を入力してください',
+            'name.max:20' => '20文字以内で入力してください',
+            'post_code.required' => '郵便番号を入力してください',
+            'post_code.max:8' => 'ハイフンを入れた8文字以内で入力してください',
+            'address.required' => '住所を入力してください',
         ];
     }
 }

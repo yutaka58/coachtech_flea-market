@@ -20,12 +20,14 @@
                     <div class="image-preview">
                         <img id="preview" src="{{ $user->image ? asset('storage/' . $user->image) : asset('images/default-user.png') }}">
                     </div>
-        
                     <label class="image-upload-label">
                         画像を選択する
                         <input class="select-img" type="file" name="image" id="image-input" accept="image/*">
                     </label>
                 </div>
+                @error('image')
+                    <div class="error-message error-message__image">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="form__group">
@@ -37,7 +39,7 @@
                         <input type="text" name="name" value="{{ old('name', $user->name) }}" />
                     </div>
                     @error('name')
-                        <div class="error-message" style="color: red;">{{ $message }}</div>
+                        <div class="error-message">{{ $message }}</div>
                     @enderror
                 </div>
             </div>
@@ -50,8 +52,8 @@
                     <div class="form__input--text">
                         <input type="post_code" name="post_code" value="{{ old('post_code', $user->post_code) }}" />
                     </div>
-                    @error('code')
-                        <div class="error-message" style="color: red;">{{ $message }}</div>
+                    @error('post_code')
+                        <div class="error-message">{{ $message }}</div>
                     @enderror
                 </div>
             </div>
@@ -65,7 +67,7 @@
                         <input type="address" name="address" value="{{ old('address', $user->address) }}"/>
                     </div>
                     @error('address')
-                        <div class="error-message" style="color: red;">{{ $message }}</div>
+                        <div class="error-message">{{ $message }}</div>
                     @enderror
                 </div>
             </div>

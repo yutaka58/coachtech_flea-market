@@ -8,6 +8,7 @@ use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\PurchaseRequest;
 use App\Http\Requests\AddressRequest;
+use App\Http\Requests\ProfileRequest;
 use App\Models\User;
 use App\Models\Item;
 use App\Models\Order;
@@ -212,7 +213,7 @@ class ItemController extends Controller
     }
 
     // プロフィール変更用
-    public function updateProfile(Request $request)
+    public function updateProfile(ProfileRequest $request)
     {
         $user = Auth::user();
 
@@ -263,6 +264,7 @@ class ItemController extends Controller
     public function exhibition(Request $request)
     {
         $user = Auth::user();
+        $categories = Category::all();
 
         if ($request->hasFile('image')) {
 
@@ -275,7 +277,7 @@ class ItemController extends Controller
             $user->image = $path;
         }
 
-        return view('exhibition', compact('user'));
+        return view('exhibition', compact('user', 'categories'));
     }
 
 }

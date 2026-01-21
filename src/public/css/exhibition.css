@@ -94,10 +94,38 @@
     font-size: 17px;
 }
 
-.form__error {
-    height: 20px;
-    color: #ff0000;
-    text-align: left;
+.category-tag-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.category-tag input[type="checkbox"] {
+    display: none;
+}
+
+.category-tag .tag-label {
+    display: inline-block;
+    padding: 6px 14px;
+    margin: 5px;
+    border: 2px solid #ff706b;
+    border-radius: 25px;
+    color: #ff706b;
+    background-color: #fff;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.category-tag:hover .tag-label {
+    background-color: #fff5f5;
+}
+
+.category-tag input[type="checkbox"]:checked + .tag-label {
+    background-color: #ff706b;
+    color: #fff;
 }
 
 .form__input--text input {
