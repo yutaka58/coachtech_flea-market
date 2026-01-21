@@ -201,7 +201,7 @@ class ItemController extends Controller
     {
         $user = Auth::user();
         // 現在のタブを取得
-        $page = $request->query('page', 'sell');
+        $page = $request->query('page', 'exhibision');
         // 出品した商品を取得
         $sellItems = Item::where('user_id', $user->id)->get();
         // 購入した商品を取得(Orderモデル経由でItemを取得)
@@ -280,4 +280,45 @@ class ItemController extends Controller
         return view('exhibition', compact('user', 'categories'));
     }
 
+    public function storeItem(Request $request)
+    {
+        // 1. バリデーション（不正なデータや空送信を防ぐ）
+        $request->validate([
+            'name' => 'required',
+            'description' => 'required',
+            'price' => 'required',
+            'condition' => 'required',
+            'category_id' => 'required|array',
+            'image' => 'nullable|image',
+        ]);
+
+        // 2. 新しい商品インスタンスを作成
+        $item = new Item();
+        $item->user_id = Auth::id();
+        $item->name = $request->name;
+        $item->description = $request->description;
+        $item->condition = $request->condition; // これで null エラーが消えます
+    
+        // 価格から記号を除去して数値に変換
+        $price = str_replace(['￥', '¥', ','], '', $request->price);
+        $item->price = (int)$price;
+
+        // 3. 画像の保存（カラム名はデータベースに合わせ img_url）
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('items', 'public');
+            $item->img_url = $path;
+        } else {
+            // 画像がない場合に備えて、デフォルトのパスを入れる（エラー回避用）
+            $item->img_url = 'items/default.png';
+        }
+
+        // 4. 商品テーブル(items)に保存
+        $item->save();
+
+        // 5. 中間テーブル(category_product)にカテゴリーを保存
+        // attachを使うことで、多対多のリレーションが保存されます
+        $item->categories()->attach($request->category_id);
+
+        return redirect('/')->with('success', '出品が完了しました');
+    }
 }

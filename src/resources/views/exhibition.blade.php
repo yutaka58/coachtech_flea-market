@@ -12,7 +12,7 @@
         <div class="sell-form__heading">
             <h1>商品の出品</h1>
         </div>
-        <form class="form" action="/" method="post" enctype="multipart/form-data">
+        <form class="form" action="/exhibition" method="POST" enctype="multipart/form-data">
             @csrf
 
             <div class="form__group">
@@ -43,7 +43,7 @@
                     <div class="category-tag-container">
                         @foreach($categories as $category)
                             <label class="category-tag">
-                                <input type="checkbox" name="category_id" value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'checked' : '' }}>
+                                <input type="checkbox" name="category_id[]" value="{{ $category->id }}" {{ is_array(old('category_id')) && in_array($category->id, old('category_id')) ? 'checked' : '' }}>
                                 <span class="tag-label">{{ $category->name }}</span>
                             </label>
                         @endforeach
@@ -74,7 +74,7 @@
                 </div>
                 <div class="form__group-content">
                     <div class="form__input--text">
-                        <input type="name" name="name" value="{{ old('name') }}" />
+                        <input type="text" name="name" value="{{ old('name') }}" />
                     </div>
                 </div>
                 <div class="form__group-title">
@@ -82,15 +82,15 @@
                 </div>
                 <div class="form__group-content">
                     <div class="form__input--text">
-                        <input type="brand" name="brand" value="{{ old('brand') }}" />
+                        <input type="text" name="brand" value="{{ old('brand') }}" />
                     </div>
                 </div>
                 <div class="form__group-title">
                     <span class="form__label--item">商品の説明</span>
                 </div>
                 <div class="form__group-content">
-                    <div class="form__input--explanation">
-                        <input type="explanation" name="explanation" value="{{ old('explanation') }}" />
+                    <div class="form__input--description">
+                        <input type="text" name="description" value="{{ old('description') }}" />
                     </div>
                 </div>
                 <div class="form__group-title">
@@ -98,7 +98,7 @@
                 </div>
                 <div class="form__group-content">
                     <div class="form__input--text">
-                        <input type="price" name="price" value="￥{{ old('price') }}" />
+                        <input type="number" name="price" value="{{ old('price') }}" />
                     </div>
                 </div>
             </div>
