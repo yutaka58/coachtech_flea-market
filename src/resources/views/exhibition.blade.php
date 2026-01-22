@@ -98,7 +98,7 @@
                 </div>
                 <div class="form__group-content">
                     <div class="form__input--text">
-                        <input type="number" name="price" value="{{ old('price') }}" />
+                        <input type="text" name="price" value="￥{{ old('price') ? (float)old('price') : '' }}" />
                     </div>
                 </div>
             </div>

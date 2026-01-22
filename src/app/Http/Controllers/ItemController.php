@@ -9,6 +9,7 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\PurchaseRequest;
 use App\Http\Requests\AddressRequest;
 use App\Http\Requests\ProfileRequest;
+use App\Http\Requests\ExhibitionRequest;
 use App\Models\User;
 use App\Models\Item;
 use App\Models\Order;
@@ -280,19 +281,8 @@ class ItemController extends Controller
         return view('exhibition', compact('user', 'categories'));
     }
 
-    public function storeItem(Request $request)
+    public function storeItem(ExhibitionRequest $request)
     {
-        // 1. バリデーション（不正なデータや空送信を防ぐ）
-        $request->validate([
-            'name' => 'required',
-            'description' => 'required',
-            'price' => 'required',
-            'condition' => 'required',
-            'category_id' => 'required|array',
-            'image' => 'nullable|image',
-        ]);
-
-        // 2. 新しい商品インスタンスを作成
         $item = new Item();
         $item->user_id = Auth::id();
         $item->name = $request->name;
@@ -303,7 +293,7 @@ class ItemController extends Controller
         $price = str_replace(['￥', '¥', ','], '', $request->price);
         $item->price = (int)$price;
 
-        // 3. 画像の保存（カラム名はデータベースに合わせ img_url）
+        // 画像の保存（カラム名はデータベースに合わせ img_url）
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('items', 'public');
             $item->img_url = $path;
