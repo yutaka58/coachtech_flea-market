@@ -8,8 +8,8 @@
 <div class="product-container">
     {{-- 左側：商品画像 --}}
     <div class="product-visual">
-        <div class="product-image-wrapper">
-            <img src="{{ asset($item->img_url) }}" alt="{{ $item->name }}" class="product-image">
+        <div class="product-image">
+            <img class="image" src="{{ str_starts_with($item->img_url, 'http') ? $item->img_url : asset('storage/' . $item->img_url) }}" alt="{{ $item->name }}">
         </div>
     </div>
 
@@ -49,10 +49,7 @@
         <section class="info-section">
             <h2 class="section-title">商品説明</h2>
             <div class="description-content">
-                <p>カラー：グレー</p>
-                <p>新品</p>
-                <p>商品の状態は良好です。傷もありません。</p>
-                <p>購入後、即発送いたします。</p>
+                {{ $item->description }}
             </div>
         </section>
 
@@ -70,7 +67,17 @@
                 </div>
                 <div class="meta-item">
                     <dt>商品の状態</dt>
-                    <dd>良好</dd>
+                    <dd>
+                        @php
+                            $conditions = [
+                                'very_good' => '良好',
+                                'good'      => '目立った傷や汚れなし',
+                                'bad'       => 'やや傷や汚れあり',
+                                'very_bad'  => '状態が悪い',
+                            ];
+                        @endphp
+                        {{ $conditions[$item->condition] ?? $item->condition }}
+                    </dd>
                 </div>
             </dl>
         </section>

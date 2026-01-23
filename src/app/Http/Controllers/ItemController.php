@@ -108,7 +108,7 @@ class ItemController extends Controller
     public function show($item_id)
     {
         // 商品を取得。見つからなければ404エラーを出す
-        $item = Item::with(['order'])->findOrFail($item_id);
+        $item = Item::with(['order', 'categories', 'comments.user'])->findOrFail($item_id);
     
         // 未認証ユーザーでも $item は取得できるので、そのままビューへ渡す
         return view('item', compact('item'));
@@ -266,17 +266,6 @@ class ItemController extends Controller
     {
         $user = Auth::user();
         $categories = Category::all();
-
-        if ($request->hasFile('image')) {
-
-            // 古い画像があれば削除
-            if ($user->image) {
-                Storage::disk('public')->delete('$user->image');
-            }
-            // storage/app/public/profiles に保存される
-            $path = $request->file('image')->store('profiles', 'public');
-            $user->image = $path;
-        }
 
         return view('exhibition', compact('user', 'categories'));
     }

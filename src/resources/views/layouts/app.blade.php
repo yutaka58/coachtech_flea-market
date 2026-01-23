@@ -36,7 +36,7 @@
                         <a class="header-nav__link" href="/mypage">マイページ</a>
                     </li>
                     <li class="header-nav__item">
-                        <a class="header-nav__exhibition-button" href="/exhibition">出品</a>
+                        <a class="header-nav__exhibition-button" href="/sell">出品</a>
                     </li>
                 @else
                     {{-- 未ログイン（ゲスト）時の表示：ここを追加して構造を維持する --}}
@@ -47,7 +47,7 @@
                         <a class="header-nav__link" href="/mypage">マイページ</a>
                     </li>
                     <li class="header-nav__item">
-                        <a class="header-nav__exhibition-button" href="/exhibition">出品</a>
+                        <a class="header-nav__exhibition-button" href="/sell">出品</a>
                     </li>
 
                 @endif

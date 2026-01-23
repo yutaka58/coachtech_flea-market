@@ -10,8 +10,8 @@
 <div class="product-container">
     <div class="left-content">
         <div class="product-visual">
-            <div class="product-image-wrapper">
-                <img src="{{ asset($item->img_url) }}" class="product-image">
+            <div class="product-image">
+                <img class="image" src="{{ str_starts_with($item->img_url, 'http') ? $item->img_url : asset('storage/' . $item->img_url) }}" alt="{{ $item->name }}">
             </div>
             <div class="product-details">
                 <h1 class="product-name"> {{ $item->name }}</h1>

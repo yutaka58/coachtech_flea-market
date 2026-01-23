@@ -29,7 +29,7 @@
             <div class="item-grid">
                 @foreach($sellItems as $item)
                     <div class="item-card">
-                        <img class="item-img" src="{{ asset($item->img_url) }}">
+                        <img class="item-img" src="{{ asset('storage/'. $item->img_url) }}">
                         <p>{{ $item->name }}</p>
                     </div>
                 @endforeach

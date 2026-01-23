@@ -14,11 +14,23 @@
 
 .product-image {
     width: 100%;
+    /* 枠の幅（親要素に合わせる） */
     aspect-ratio: 1 / 1;
-    object-fit: contain;
+    /* 正方形に固定（便利！） */
+    overflow: hidden;
+    /* はみ出した画像を隠す */
+    position: relative;
     background-color: #f0f0f0;
-    /* 画像がない場合の背景 */
-    margin-top: 30px;
+    /* 画像がない時の背景色 */
+    margin-top: 40px;
+}
+
+.product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* これが重要！縦横比を維持したまま枠いっぱいに表示 */
+    display: block;
 }
 
 /* ヘッダー周り */

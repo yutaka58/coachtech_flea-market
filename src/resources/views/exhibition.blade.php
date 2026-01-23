@@ -12,7 +12,7 @@
         <div class="sell-form__heading">
             <h1>商品の出品</h1>
         </div>
-        <form class="form" action="/exhibition" method="POST" enctype="multipart/form-data">
+        <form class="form" action="/sell" method="POST" enctype="multipart/form-data">
             @csrf
 
             <div class="form__group">
@@ -21,13 +21,16 @@
                 </div>
                 <div class="form-grid">
                     <div class="image-preview">
-                        <img id="preview" src="{{ $user->image ? asset('storage/' . $user->image) : asset('images/default-user.png') }}">
+                        <img id="preview" src="" style="display: none";>{{ old('image') }}
                     </div>
                     <label class="image-upload-label">
                         画像を選択する
                         <input class="select-img" type="file" name="image" id="image-input" accept="image/*">
                     </label>
                 </div>
+                @error('image')
+                    <p class="error-message">{{ $message }}</p>
+                @enderror
             </div>
 
             <div class="form__group">
@@ -48,6 +51,9 @@
                             </label>
                         @endforeach
                     </div>
+                    @error('category_id')
+                        <p class="error-message">{{ $message }}</p>
+                    @enderror
                 </div>
                 <div class="form__group-title">
                     <span class="form__label--item">商品の状態</span>
@@ -61,6 +67,9 @@
                         <option value="very_bad">状態が悪い</option>
                     </select>
                 </div>
+                @error('condition')
+                    <p class="error-message">{{ $message }}</p>
+                @enderror
             </div>
 
             <div class="form__group">
@@ -76,6 +85,9 @@
                     <div class="form__input--text">
                         <input type="text" name="name" value="{{ old('name') }}" />
                     </div>
+                    @error('name')
+                        <p class="error-message">{{ $message }}</p>
+                    @enderror
                 </div>
                 <div class="form__group-title">
                     <span class="form__label--item">ブランド名</span>
@@ -92,14 +104,22 @@
                     <div class="form__input--description">
                         <input type="text" name="description" value="{{ old('description') }}" />
                     </div>
+                    @error('description')
+                        <p class="error-message">{{ $message }}</p>
+                    @enderror
                 </div>
                 <div class="form__group-title">
                     <span class="form__label--item">販売価格</span>
                 </div>
                 <div class="form__group-content">
-                    <div class="form__input--text">
-                        <input type="text" name="price" value="￥{{ old('price') ? (float)old('price') : '' }}" />
+                    <div class="form__input--text" style="display: flex; align-items: center; border: 1px solid #ccc; border-radius: 3px; padding-left: 10px;">
+                        <span>￥</span>
+                        <input type="number" name="price" value="{{ old('price') }}" 
+                            style="border: none; outline: none; width: 100%; padding: 10px;" />
                     </div>
+                    @error('price')
+                        <p class="error-message">{{ $message }}</p>
+                    @enderror
                 </div>
             </div>
 
@@ -112,10 +132,16 @@
 <script>
 document.getElementById('image-input').addEventListener('change', function(e) {
     const reader = new FileReader();
+    const preview = document.getElementById('preview');
+
     reader.onload = function(e) {
-        document.getElementById('preview').src = e.target.result;
+        preview.src = e.target.result;
+        preview.style.display = 'block'; // 画像を読み込んだら表示する
     }
-    reader.readAsDataURL(e.target.files[0]);
+
+    if (e.target.files[0]) {
+        reader.readAsDataURL(e.target.files[0]);
+    }
 });
 </script>
 

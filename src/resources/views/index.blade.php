@@ -29,7 +29,7 @@
             <div class="item-card">
                 <a href="/item/{{ $item->id }}">
                     <div class="item-image">
-                        <img class="image" src="{{ asset($item->img_url) }}" alt="{{ $item->name }}">
+                        <img class="image" src="{{ str_starts_with($item->img_url, 'http') ? $item->img_url : asset('storage/' . $item->img_url) }}" alt="{{ $item->name }}">
                         {{-- ここに SOLD 表示を追加 --}}
                         @if($item->order)
                             <div class="sold-label">

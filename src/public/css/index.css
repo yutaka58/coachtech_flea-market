@@ -48,14 +48,26 @@
     padding: 0 50px;
 }
 
-.image {
-    width: 200px;
+.item-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* これが重要！縦横比を維持したまま枠いっぱいに表示 */
+    display: block;
 }
 
 .item-image {
     position: relative;
     /* 子要素のSOLDラベルを絶対配置にするため */
+    width: 100%;
+    /* 枠の幅（親要素に合わせる） */
+    aspect-ratio: 1 / 1;
+    /* 正方形に固定（便利！） */
     overflow: hidden;
+    /* はみ出した画像を隠す */
+    position: relative;
+    background-color: #f0f0f0;
+    /* 画像がない時の背景色 */
 }
 
 .sold-label {

@@ -183,13 +183,10 @@
     width: 100%;
     height: 40px;
     appearance: none;
-    /* 標準の矢印を消す (モダンブラウザ) */
     padding-right: 30px;
-    /* 矢印と文字が重ならないように右側に余白を作る */
-    /* その他背景色や枠線のスタイル */
 }
 
-.form__input--condition::selection {
+.form__input--condition option {
     background-color: grey;
 }
 

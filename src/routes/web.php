@@ -53,8 +53,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/purchase/address/{item_id}', [ItemController::class, 'updateaddress']);
     Route::post('/purchase/payment/{item_id}', [ItemController::class, 'savePaymentMethod'])->name('payment.save_session');
 
-    Route::get('/exhibition', [ItemController::class, 'exhibition']);
-    Route::post('/exhibition', [ItemController::class, 'storeItem']);
+    Route::get('/sell', [ItemController::class, 'exhibition']);
+    Route::post('/sell', [ItemController::class, 'storeItem']);
 });
 
 
