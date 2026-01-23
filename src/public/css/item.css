@@ -146,14 +146,23 @@
 
 .tag-group {
     display: flex;
-    gap: 8px;
+    flex-wrap: wrap;
+    /* 幅が足りない時に自動で改行する */
+    gap: 10px 8px;
+    /* タグ同士の隙間（上下10px、左右8px） */
 }
 
 .category-tag {
-    background-color: #e0e0e0;
-    padding: 3px 12px;
+    background-color: #f0f0f0;
+    /* 少し明るめのグレー */
+    padding: 4px 12px;
+    /* 上下左右の余白を調整 */
     border-radius: 20px;
-    font-size: 13px;
+    /* 角丸 */
+    font-size: 14px;
+    /* 文字サイズ */
+    white-space: nowrap;
+    /* タグ内の文字が途中で改行されないようにする */
 }
 
 /* コメント部分 */
