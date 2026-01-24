@@ -107,15 +107,16 @@
             <form action="/item/{{ $item->id }}/comment" method="POST" class="comment-form">
                 @csrf
                 <label for="comment" class="form-label">商品へのコメント</label>
+                @if($item->order)
+                <p class="comment-disabled"></p>
+                    <span class="btn-submit btn-disabled">コメントを送信する</span>
+                @else
                 <textarea name="comment" id="comment" class="comment-textarea"></textarea>
+                    <button type="submit" class="btn-submit">コメントを送信する</button>
+                @endif
                 @error('comment')
                     <p style="color: red">{{ $message }}</p>
                 @enderror
-                @if($item->order)
-                    <span class="btn-submit btn-disabled">コメントを送信する</span>
-                @else
-                    <button type="submit" class="btn-submit">コメントを送信する</button>
-                @endif
             </form>
         </section>
     </div>

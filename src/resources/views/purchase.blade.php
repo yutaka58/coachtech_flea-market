@@ -7,76 +7,80 @@
 
 @section('content')
 
-<div class="product-container">
-    <div class="left-content">
-        <div class="product-visual">
-            <div class="product-image">
-                <img class="image" src="{{ str_starts_with($item->img_url, 'http') ? $item->img_url : asset('storage/' . $item->img_url) }}" alt="{{ $item->name }}">
-            </div>
-            <div class="product-details">
-                <h1 class="product-name"> {{ $item->name }}</h1>
-                <p class="product-price">￥{{ number_format($item->price) }}<span>(税込)</span></p>
-            </div>
-        </div>
-        <div class="product-group">
-            <div class="product-details">
-                <p class="product-header">支払い方法</p>
-                <select class="payment-method select" name="payment_method" id="payment_method_select">
-                    <option value="" disabled {{ is_null($payment_id) ? 'selected' : '' }} hidden>選択してください</option>
-    
-                    <option value="konbini" {{ $payment_id == 'konbini' ? 'selected' : '' }}>コンビニ払い</option>
-    
-                    <option value="card" {{ $payment_id == 'card' ? 'selected' : '' }}>カード支払い</option>
-                </select>
-                @error('payment_method')
-                    <div class="error-message">{{ $message }}</div>
-                @enderror
+<form action="/purchase/{{ $item->id }}" method="post" id="purchase-form">
+@csrf
 
+    <div class="product-container">
+        <div class="left-content">
+            <div class="product-visual">
+                <div class="product-image">
+                    <img class="image" src="{{ str_starts_with($item->img_url, 'http') ? $item->img_url : asset('storage/' . $item->img_url) }}" alt="{{ $item->name }}">
+                </div>
+                <div class="product-details">
+                    <h1 class="product-name"> {{ $item->name }}</h1>
+                    <p class="product-price">￥{{ number_format($item->price) }}<span>(税込)</span></p>
+                </div>
+            </div>
+            <div class="product-group">
+                <div class="product-details">
+                    <p class="product-header">支払い方法</p>
+                    <select class="payment-method select" name="payment_method" id="payment_method_select">
+                        <option value="" disabled {{ is_null($payment_id) ? 'selected' : '' }} hidden>選択してください</option>
+    
+                        <option value="konbini" {{ $payment_id == 'konbini' ? 'selected' : '' }}>コンビニ払い</option>
+    
+                        <option value="card" {{ $payment_id == 'card' ? 'selected' : '' }}>カード支払い</option>
+                    </select>
+                    @error('payment_method')
+                        <div class="error-message">{{ $message }}</div>
+                    @enderror
+
+                </div>
+            </div>
+            <div class="product-group">
+                <div class="product-details">
+                    <p class="product-header">配送先
+                        <a class="product-address__change" href="/purchase/address/{{ $item->id }}">変更する</a>
+                    </p>
+                </div>
+                <div class="product-details">
+                    <p class="post-code">〒 {{ Auth::user()->post_code }}</p>
+                    <input type="hidden" name="post_code" value="{{ old('post_code', Auth::user()->post_code) }}">
+                    @error('post_code')
+                        <div class="error-message">{{ $message }}</div>
+                    @enderror
+                    <p class="address-building">{{ Auth::user()->address }}　　{{ Auth::user()->building }}</p>
+                    <input type="hidden" name="address" value="{{ old('address', Auth::user()->address) }}">
+                    <input type="hidden" name="building" value="{{ old('building', Auth::user()->building) }}">
+                    @error('address')
+                        <div class="error-message">{{ $message }}</div>
+                    @enderror
+                    @error('building')
+                        <div class="error-message">{{ $message }}</div>
+                    @enderror
+                </div>
             </div>
         </div>
-        <div class="product-group">
-            <div class="product-details">
-                <p class="product-header">配送先
-                    <a class="product-address__change" href="/purchase/address/{{ $item->id }}">変更する</a>
-                </p>
-            </div>
-            <div class="product-details">
-                <p class="post-code">〒 {{ Auth::user()->post_code }}</p>
-                @error('post_code')
-                    <div class="error-message">{{ $message }}</div>
-                @enderror
-                <p class="address-building">{{ Auth::user()->address }}　　{{ Auth::user()->building }}</p>
-                @error('address')
-                    <div class="error-message">{{ $message }}</div>
-                @enderror
-                @error('building')
-                    <div class="error-message">{{ $message }}</div>
-                @enderror
-            </div>
-        </div>
-    </div>
-    <div class="right-content">
-        <dl class="meta-list">
-            <div class="meta-item">
-                <dt class="meta-item__purchase">商品代金</dt>
-                <dd class="meta-item__payment">￥{{ number_format($item->price) }}</dd>
-            </div>
-        </dl>
-        <dl class="meta-list">
-            <div class="meta-item">
-                <dt class="meta-item__purchase">支払い方法</dt>
-                <dd id="display_payment_method" class="meta-item__payment">{{ $payment_id ?? '未選択' }}</dd>
-            </div>
-        </dl>
-        <div class="purchase-btn">
-            <form action="/purchase/{{ $item->id }}" method="post" id="purchase-form">
-                @csrf
+        <div class="right-content">
+            <dl class="meta-list">
+                <div class="meta-item">
+                    <dt class="meta-item__purchase">商品代金</dt>
+                    <dd class="meta-item__payment">￥{{ number_format($item->price) }}</dd>
+                </div>
+            </dl>
+            <dl class="meta-list">
+                <div class="meta-item">
+                    <dt class="meta-item__purchase">支払い方法</dt>
+                    <dd id="display_payment_method" class="meta-item__payment">{{ $payment_id ?? '未選択' }}</dd>
+                </div>
+            </dl>
+            <div class="purchase-btn">
                 <input type="hidden" name="payment_method" id="hidden_payment_method">
                 <button class="btn-primary" type="submit">購入する</button>
-            </form>
+            </div>
         </div>
     </div>
-</div>
+</form>
 
 
 <!-- 左で選択した支払い方法を右にリアルタイムで表示 -->

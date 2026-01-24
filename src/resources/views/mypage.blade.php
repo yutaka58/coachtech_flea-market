@@ -29,7 +29,7 @@
             <div class="item-grid">
                 @foreach($sellItems as $item)
                     <div class="item-card">
-                        <img class="item-img" src="{{ asset('storage/'. $item->img_url) }}">
+                        <img class="item-img" src="{{ str_starts_with($item->img_url, 'http') ? $item->img_url : asset('storage/' . $item->img_url) }}">
                         <p>{{ $item->name }}</p>
                     </div>
                 @endforeach
@@ -39,7 +39,7 @@
             <div class="item-grid">
                 @foreach($buyItems as $item)
                     <div class="item-card">
-                        <img class="item-img" src="{{ asset($item->img_url) }}">
+                        <img class="item-img" src="{{ str_starts_with($item->img_url, 'http') ? $item->img_url : asset('storage/' . $item->img_url) }}">
                         <p>{{ $item->name }}</p>
                     </div>
                 @endforeach

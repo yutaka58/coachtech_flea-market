@@ -26,7 +26,7 @@
                     </label>
                 </div>
                 @error('image')
-                    <div class="error-message error-message__image">{{ $message }}</div>
+                    <div class="error-message">{{ $message }}</div>
                 @enderror
             </div>
 

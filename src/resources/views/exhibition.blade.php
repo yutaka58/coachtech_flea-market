@@ -60,11 +60,11 @@
                 </div>
                 <div class="form__select-content">
                     <select class="form__input--condition" name="condition" id="condition">
-                        <option value="" disabled selected hidden>選択してください</option>
-                        <option value="very_good">良好</option>
-                        <option value="good">目立った傷や汚れなし</option>
-                        <option value="bad">やや傷や汚れあり</option>
-                        <option value="very_bad">状態が悪い</option>
+                        <option value="" disabled {{ old('condition') === null ? 'selected' : '' }}  hidden>選択してください</option>
+                        <option value="very_good" {{ old('condition') == 'very_good' ? 'selected' : '' }}>良好</option>
+                        <option value="good" {{ old('condition') == 'good' ? 'selected' : '' }}>目立った傷や汚れなし</option>
+                        <option value="bad" {{ old('condition') == 'bad' ? 'selected' : '' }}>やや傷や汚れあり</option>
+                        <option value="very_bad"  {{ old('condition') == 'very_bad' ? 'selected' : '' }}>状態が悪い</option>
                     </select>
                 </div>
                 @error('condition')
@@ -102,7 +102,7 @@
                 </div>
                 <div class="form__group-content">
                     <div class="form__input--description">
-                        <input type="text" name="description" value="{{ old('description') }}" />
+                        <textarea name="description" value="{{ old('description') }}"></textarea>
                     </div>
                     @error('description')
                         <p class="error-message">{{ $message }}</p>

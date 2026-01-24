@@ -9,9 +9,6 @@
 <div class="top-page__content">
     <div class="tab-menu">
         <form action="/?tab=mylist" method="get" class="tab-form">
-            <!-- おすすめがリンク不要の場合[label]使用
-            <label class="tab-item">おすすめ</label>
-             -->
 
             {{-- 現在の検索キーワードを保持 --}}
             <input type="hidden" name="keyword" value="{{ request('keyword') }}">

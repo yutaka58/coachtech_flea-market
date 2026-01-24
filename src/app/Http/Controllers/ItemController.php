@@ -68,8 +68,6 @@ class ItemController extends Controller
         return view('profile', compact('user')); // profile.blade.phpを表示
     }
 
-    // app/Http/Controllers/ItemController.php
-
     public function index(Request $request)
     {
         $tab = $request->query('tab', 'recommend');
@@ -202,7 +200,7 @@ class ItemController extends Controller
     {
         $user = Auth::user();
         // 現在のタブを取得
-        $page = $request->query('page', 'exhibision');
+        $page = $request->query('page', 'sell');
         // 出品した商品を取得
         $sellItems = Item::where('user_id', $user->id)->get();
         // 購入した商品を取得(Orderモデル経由でItemを取得)
