@@ -4,27 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 use App\Models\User;
 use App\Models\Item;
 use App\Models\Order;
 use App\Models\Category;
 
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
-
 class ItemController extends Controller
 {
-
-
-
-    // プロフィール設定画面を表示する
-    public function editProfile() {
-        // 現在ログインしているユーザー情報を取得
-        $user = Auth::user();
-        return view('profile', compact('user')); // profile.blade.phpを表示
-    }
-
     public function index(Request $request)
     {
         $tab = $request->query('tab', 'recommend');
@@ -69,8 +57,6 @@ class ItemController extends Controller
         return view('item', compact('item'));
     }
 
-
-
     //検索機能
     public function getSearch(Request $request)
     {
@@ -85,166 +71,5 @@ class ItemController extends Controller
         $items = $query->get();
         $tab = 'recommend';
         return view('index')->with(compact('items','tab'));
-    }
-
-    // 購入画面を表示用
-    public function purchase($item_id)
-    {
-        $item = Item::findOrFail($item_id);
-        $user = Auth::user();
-
-        // 売り切れ判定
-        $isSoldOut = Order::where('item_id', $item_id)->exists();
-        if ($isSoldOut) {
-            return redirect('/');
-        }
-
-        // --- 💡 ここを修正 ---
-        // セッションに保存された支払い方法を取得。なければ null
-        $payment_id = session('payment_method');
-        // ---------------------
-
-        // 購入画面（purchase.blade.php）を表示
-        return response()->view('purchase', compact('item', 'user', 'payment_id'));
-    }
-
-    // 購入実装
-    public function storepurchase(PurchaseRequest $request, $item_id)
-    {
-        // セッションから保存しておいた支払い方法を取得
-        $paymentMethod = $request->payment_method ?: session('payment_method');
-
-        if (!$paymentMethod) {
-            return redirect()->back()->with('error', '支払い方法を選択してください。');
-        }
-
-        \App\Models\Order::create([
-            'user_id' => auth()->id(),
-            'item_id' => $item_id,
-            'payment_method' => $paymentMethod, // DBのカラム名に合わせてください
-        ]);
-
-        // 購入完了後はセッションを削除する
-        session()->forget('payment_method');
-
-        return redirect('/')->with('success', '購入が完了しました！');
-    }
-
-    public function savePaymentMethod(Request $request, $item_id)
-    {
-        // セッションに保存
-        session(['payment_method' => $request->payment_method]);
-
-        // AJAX(fetch)リクエストの場合はJSONを返す
-        if ($request->ajax()) {
-            return response()->json(['success' => true]);
-        }
-
-        // 普通のリクエストの場合は購入画面へ戻る
-       return redirect()->route('purchase.show', ['item_id' => $item_id]);
-    }
-
-    // マイページ表示用
-    public function mypage(Request $request)
-    {
-        $user = Auth::user();
-        // 現在のタブを取得
-        $page = $request->query('page', 'sell');
-        // 出品した商品を取得
-        $sellItems = Item::where('user_id', $user->id)->get();
-        // 購入した商品を取得(Orderモデル経由でItemを取得)
-        $buyItems = Item::whereHas('order', function($q) use($user) {
-            $q->where('user_id', $user->id);
-        })->get();
-
-        return view('mypage', compact('user', 'page', 'sellItems', 'buyItems'));
-    }
-
-    // プロフィール変更用
-    public function updateProfile(ProfileRequest $request)
-    {
-        $user = Auth::user();
-
-        if ($request->hasFile('image')) {
-
-            // 古い画像があれば削除
-            if ($user->image) {
-                Storage::disk('public')->delete('$user->image');
-            }
-            // storage/app/public/profiles に保存される
-            $path = $request->file('image')->store('profiles', 'public');
-            $user->image = $path;
-        }
-
-        $user->name = $request->name;
-        $user->post_code = $request->post_code;
-        $user->address = $request->address;
-        $user->building = $request->building;
-
-        $user->save();
-
-        return redirect('/');
-    }
-
-    // 住所変更画面を表示
-    public function address(Request $request, $item_id)
-    {
-        $item = Item::findOrFail($item_id);
-        return view('address', compact('item'));
-    }
-
-    // 住所変更の更新
-    public function updateaddress(AddressRequest $request, $item_id)
-    {
-        // ...住所を保存する処理（既存のコード）...
-        $user = Auth::user();
-        $user->post_code = $request->post_code;
-        $user->address = $request->address;
-        $user->building = $request->building;
-        $user->save();
-
-        // 💡 重要：JSONを返すのではなく、購入画面へリダイレクトさせる
-        // これにより {"success": true} の画面には行かず、元の購入ページに戻ります
-        return redirect()->route('purchase.show', ['item_id' => $item_id]);
-    }
-
-    // 出品画面を表示
-    public function exhibition(Request $request)
-    {
-        $user = Auth::user();
-        $categories = Category::all();
-
-        return view('exhibition', compact('user', 'categories'));
-    }
-
-    public function storeItem(ExhibitionRequest $request)
-    {
-        $item = new Item();
-        $item->user_id = Auth::id();
-        $item->name = $request->name;
-        $item->description = $request->description;
-        $item->condition = $request->condition; // これで null エラーが消えます
-    
-        // 価格から記号を除去して数値に変換
-        $price = str_replace(['￥', '¥', ','], '', $request->price);
-        $item->price = (int)$price;
-
-        // 画像の保存（カラム名はデータベースに合わせ img_url）
-        if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('items', 'public');
-            $item->img_url = $path;
-        } else {
-            // 画像がない場合に備えて、デフォルトのパスを入れる（エラー回避用）
-            $item->img_url = 'items/default.png';
-        }
-
-        // 4. 商品テーブル(items)に保存
-        $item->save();
-
-        // 5. 中間テーブル(category_product)にカテゴリーを保存
-        // attachを使うことで、多対多のリレーションが保存されます
-        $item->categories()->attach($request->category_id);
-
-        return redirect('/')->with('success', '出品が完了しました');
     }
 }

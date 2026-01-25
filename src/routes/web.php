@@ -39,27 +39,33 @@ route::get('/search', [ItemController::class, 'getSearch']);
 
 // --- 認証ルート（ログイン必須） ---
 Route::middleware('auth')->group(function () {
-    // ログアウト処理が必要ならここに追加
+    // ログアウト
     Route::post('/logout', [AuthController::class, 'logout']);
 
-    Route::get('/mypage/profile', [ItemController::class, 'editProfile']);
-    Route::post('/mypage/profile', [ItemController::class, 'updateProfile']);
+    // プロフィール
+    Route::get('/mypage/profile', [ProfileController::class, 'editProfile']);
+    Route::post('/mypage/profile', [ProfileController::class, 'updateProfile']);
 
+    // いいね
     Route::post('/products/{item_id}/favorite', [FavoriteController::class, 'toggle']);
-
-    Route::get('/purchase/{item_id}', [ItemController::class, 'purchase'])->name('purchase.show');
-    Route::post('/purchase/{item_id}', [ItemController::class, 'storepurchase']);
-
+    // コメント
     Route::post('/item/{item_id}/comment', [CommentController::class, 'store']);
 
-    Route::get('/mypage', [ItemController::class, 'mypage']);
+    // マイページ
+    Route::get('/mypage', [ProfileController::class, 'mypage']);
 
-    Route::get('/purchase/address/{item_id}', [ItemController::class, 'address'])->name('address.edit');
-    Route::post('/purchase/address/{item_id}', [ItemController::class, 'updateaddress']);
-    Route::post('/purchase/payment/{item_id}', [ItemController::class, 'savePaymentMethod'])->name('payment.save_session');
+    // 購入
+    Route::get('/purchase/{item_id}', [PurchaseController::class, 'purchase'])->name('purchase.show');
+    Route::post('/purchase/{item_id}', [PurchaseController::class, 'storepurchase']);
 
-    Route::get('/sell', [ItemController::class, 'exhibition']);
-    Route::post('/sell', [ItemController::class, 'storeItem']);
+    // 住所変更
+    Route::get('/purchase/address/{item_id}', [ProfileController::class, 'address'])->name('address.edit');
+    Route::post('/purchase/address/{item_id}', [ProfileController::class, 'updateaddress']);
+    Route::post('/purchase/payment/{item_id}', [ProfileController::class, 'savePaymentMethod'])->name('payment.save_session');
+
+    // 出品
+    Route::get('/sell', [ExhibitionController::class, 'exhibition']);
+    Route::post('/sell', [ExhibitionController::class, 'storeItem']);
 });
 
 

@@ -9,6 +9,7 @@ use App\Http\Requests\LoginRequest;
 use App\Models\User;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -19,7 +20,7 @@ class AuthController extends Controller
 
     // 会員登録画面表示
     public function getRegister() {
-        return view('auth.register'); // 画面を出すだけ
+        return view('auth.register');
     }
 
     // 会員登録の保存処理
