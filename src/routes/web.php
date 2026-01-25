@@ -2,6 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\ExhibitionController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FavoriteController;
 
@@ -22,20 +26,21 @@ Route::get('/', [ItemController::class, 'index']);
 Route::get('/item/{item_id}', [ItemController::class, 'show']);
 
 
-
 // ログイン・登録
-Route::get('/login', [ItemController::class, 'getLogin'])->name('login');
-Route::post('/login', [ItemController::class, 'login']);
-Route::get('/register', [ItemController::class, 'getRegister']);
-Route::post('/register', [ItemController::class, 'postRegister']);
+Route::get('/login', [AuthController::class, 'getLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
+Route::get('/register', [AuthController::class, 'getRegister']);
+Route::post('/register', [AuthController::class, 'postRegister']);
+
 
 // 検索機能
 route::get('/search', [ItemController::class, 'getSearch']);
 
+
 // --- 認証ルート（ログイン必須） ---
 Route::middleware('auth')->group(function () {
     // ログアウト処理が必要ならここに追加
-    Route::post('/logout', [ItemController::class, 'logout']);
+    Route::post('/logout', [AuthController::class, 'logout']);
 
     Route::get('/mypage/profile', [ItemController::class, 'editProfile']);
     Route::post('/mypage/profile', [ItemController::class, 'updateProfile']);
