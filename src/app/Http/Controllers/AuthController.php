@@ -13,18 +13,20 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    // ログイン画面表示
-    public function getLogin() {
-        return view('auth.login');
+    // ログイン処理
+    public function login(LoginRequest $request) {
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::attempt($credentials)) {
+        return redirect('/');
+        }
+
+        return back()->withErrors(['email' => 'ログイン情報が登録されていません']);
     }
 
-    // 会員登録画面表示
-    public function getRegister() {
-        return view('auth.register');
-    }
 
     // 会員登録の保存処理
-    public function postRegister(RegisterRequest $request)
+    public function Register(RegisterRequest $request)
     {
         // 1. ユーザー作成
         $user = User::create([
@@ -38,17 +40,6 @@ class AuthController extends Controller
 
         // 3. プロフィール設定画面へリダイレクト
         return redirect('/mypage/profile');
-    }
-
-    // ログイン処理
-    public function login(LoginRequest $request) {
-        $credentials = $request->only('email', 'password');
-
-        if (Auth::attempt($credentials)) {
-        return redirect('/');
-        }
-
-        return back()->withErrors(['email' => 'ログイン情報が登録されていません']);
     }
 
         //ログアウト機能

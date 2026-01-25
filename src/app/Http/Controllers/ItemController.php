@@ -52,7 +52,7 @@ class ItemController extends Controller
     {
         // 商品を取得。見つからなければ404エラーを出す
         $item = Item::with(['order', 'categories', 'comments.user'])->findOrFail($item_id);
-    
+
         // 未認証ユーザーでも $item は取得できるので、そのままビューへ渡す
         return view('item', compact('item'));
     }

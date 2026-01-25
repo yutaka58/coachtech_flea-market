@@ -14,7 +14,7 @@ use App\Http\Requests\PurchaseRequest;
 
 class PurchaseController extends Controller
 {
-        // 購入画面を表示用
+    // 購入画面を表示用
     public function purchase($item_id)
     {
         $item = Item::findOrFail($item_id);
@@ -26,7 +26,6 @@ class PurchaseController extends Controller
             return redirect('/');
         }
 
-        // --- 💡 ここを修正 ---
         // セッションに保存された支払い方法を取得。なければ null
         $payment_id = session('payment_method');
         // ---------------------
@@ -36,7 +35,7 @@ class PurchaseController extends Controller
     }
 
     // 購入実装
-    public function storepurchase(PurchaseRequest $request, $item_id)
+    public function storePurchase(PurchaseRequest $request, $item_id)
     {
         // セッションから保存しておいた支払い方法を取得
         $paymentMethod = $request->payment_method ?: session('payment_method');

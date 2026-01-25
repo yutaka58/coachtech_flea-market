@@ -11,7 +11,7 @@ class FavoriteController extends Controller
     {
         $item = Item::findOrFail($item_id);
         $user = auth()->user();
-    
+
         if ($item->isFavoritedBy($user)) {
             $item->favorites()->detach($user->id);
             $liked = false;

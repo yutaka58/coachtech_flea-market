@@ -27,10 +27,8 @@ Route::get('/item/{item_id}', [ItemController::class, 'show']);
 
 
 // ログイン・登録
-Route::get('/login', [AuthController::class, 'getLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
-Route::get('/register', [AuthController::class, 'getRegister']);
-Route::post('/register', [AuthController::class, 'postRegister']);
+Route::post('/register', [AuthController::class, 'Register']);
 
 
 // 検索機能
@@ -56,11 +54,11 @@ Route::middleware('auth')->group(function () {
 
     // 購入
     Route::get('/purchase/{item_id}', [PurchaseController::class, 'purchase'])->name('purchase.show');
-    Route::post('/purchase/{item_id}', [PurchaseController::class, 'storepurchase']);
+    Route::post('/purchase/{item_id}', [PurchaseController::class, 'storePurchase'])->name('purchase.store');
 
     // 住所変更
     Route::get('/purchase/address/{item_id}', [ProfileController::class, 'address'])->name('address.edit');
-    Route::post('/purchase/address/{item_id}', [ProfileController::class, 'updateaddress']);
+    Route::post('/purchase/address/{item_id}', [ProfileController::class, 'updateAddress'])->name('address.update');
     Route::post('/purchase/payment/{item_id}', [ProfileController::class, 'savePaymentMethod'])->name('payment.save_session');
 
     // 出品

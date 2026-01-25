@@ -30,7 +30,7 @@ class ExhibitionController extends Controller
         $item->name = $request->name;
         $item->description = $request->description;
         $item->condition = $request->condition; // これで null エラーが消えます
-    
+
         // 価格から記号を除去して数値に変換
         $price = str_replace(['￥', '¥', ','], '', $request->price);
         $item->price = (int)$price;
