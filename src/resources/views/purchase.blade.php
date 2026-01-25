@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateView() {
         const methodValue = select.value;
         const methodText = select.options[select.selectedIndex].text;
-        
+
         if (methodValue && methodValue !== "") {
             display.innerText = methodText;
             hiddenInput.value = methodValue; // ここでhiddenに値を確実にセット
@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 3. 💡 【追加】送信ボタンが押された瞬間に最終確認
     form.addEventListener('submit', function() {
-        updateView(); 
+        updateView();
     });
 });
 

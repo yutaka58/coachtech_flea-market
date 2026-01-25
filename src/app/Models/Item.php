@@ -27,7 +27,7 @@ class Item extends Model
     public function categories()
     {
         // 商品が複数のカテゴリーを持つ場合（多対多）
-        return $this->belongsToMany(Category::class, 'category_product');
+        return $this->belongsToMany(Category::class);
     }
 
     public function favorites()

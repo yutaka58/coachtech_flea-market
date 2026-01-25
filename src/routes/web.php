@@ -55,11 +55,12 @@ Route::middleware('auth')->group(function () {
     // 購入
     Route::get('/purchase/{item_id}', [PurchaseController::class, 'purchase'])->name('purchase.show');
     Route::post('/purchase/{item_id}', [PurchaseController::class, 'storePurchase'])->name('purchase.store');
+    Route::post('/purchase/payment/{item_id}', [PurchaseController::class, 'savePaymentMethod'])->name('payment.save_session');
 
     // 住所変更
     Route::get('/purchase/address/{item_id}', [ProfileController::class, 'address'])->name('address.edit');
     Route::post('/purchase/address/{item_id}', [ProfileController::class, 'updateAddress'])->name('address.update');
-    Route::post('/purchase/payment/{item_id}', [ProfileController::class, 'savePaymentMethod'])->name('payment.save_session');
+
 
     // 出品
     Route::get('/sell', [ExhibitionController::class, 'exhibition']);
