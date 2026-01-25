@@ -89,15 +89,16 @@
                 <div class="comment-item">
                     <div class="user-info">
                         <div class="user-avatar">
-                            {{-- プロフィール画像がある場合 --}}
-                            @if($comment->user->img_url)
-                                <img src="{{ asset($comment->user->img_url) }}">
+                            @if($comment->user->image)
+                                <img class="img" src="{{ asset('storage/' . $comment->user->image) }}" alt="ユーザー画像">
+                            @else
+                                <img class="img" src="{{ asset('images/default-user.png') }}" alt="デフォルト画像">
                             @endif
                         </div>
                         <span class="user-name">{{ $comment->user->name }}</span>
                     </div>
                     <div class="comment-body">
-                        {{ $comment->comment }}
+                        {!! nl2br(e($comment->comment)) !!}
                     </div>
                 </div>
             @endforeach

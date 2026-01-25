@@ -66,6 +66,10 @@
     margin-bottom: 30px;
 }
 
+.payment-method option {
+    background-color: gray;
+}
+
 .post-code,
 .address-building {
     width: 100%;
@@ -105,12 +109,6 @@
     font-weight: bold;
     margin-top: 50px;
     margin-left: 40px;
-}
-
-/* 未選択の時は少し薄くするなどの演出 */
-#display_payment_method {
-    font-weight: bold;
-    color: #333;
 }
 
 .error-message {
