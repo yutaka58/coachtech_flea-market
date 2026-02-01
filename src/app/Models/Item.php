@@ -52,4 +52,9 @@ class Item extends Model
         return $this->hasMany(\App\Models\Comment::class);
     }
 
+    public function seller()
+    {
+    return $this->belongsTo(User::class, 'user_id');
+    }
+
 }
