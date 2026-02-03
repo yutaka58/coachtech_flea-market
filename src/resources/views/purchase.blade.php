@@ -22,7 +22,7 @@
                 </div>
             </div>
             <div class="product-group">
-                <div class="product-details">
+                <div class="product-details product-details__payment">
                     <p class="product-header">支払い方法</p>
                     <select class="payment-method select" name="payment_method" id="payment_method_select">
                         <option value="" disabled {{ is_null($payment_id) ? 'selected' : '' }} hidden>選択してください</option>
@@ -34,7 +34,6 @@
                     @error('payment_method')
                         <div class="error-message">{{ $message }}</div>
                     @enderror
-
                 </div>
             </div>
             <div class="product-group">

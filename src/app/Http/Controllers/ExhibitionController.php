@@ -29,7 +29,7 @@ class ExhibitionController extends Controller
         $item->user_id = Auth::id();
         $item->name = $request->name;
         $item->description = $request->description;
-        $item->condition = $request->condition; // これで null エラーが消えます
+        $item->condition = $request->condition;
 
         // 価格から記号を除去して数値に変換
         $price = str_replace(['￥', '¥', ','], '', $request->price);

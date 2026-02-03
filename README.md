@@ -57,4 +57,7 @@ php artisan db:seed
 - 開発環境：http://localhost/
 - phpMyAdmin:：http://localhost:8080/
 
-# coachtech_flea-market-app
+## 備考
+
+1. マイページの「出品した商品」「購入した商品」に表示された
+   商品の詳細画面が開けなくとも良いことコーチと確認済み。

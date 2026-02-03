@@ -49,7 +49,7 @@
         <section class="info-section">
             <h2 class="section-title">商品説明</h2>
             <div class="description-content">
-                {{ $item->description }}
+                {!! nl2br(e($item->description)) !!}
             </div>
         </section>
 

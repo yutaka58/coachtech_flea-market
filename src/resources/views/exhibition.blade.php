@@ -102,7 +102,7 @@
                 </div>
                 <div class="form__group-content">
                     <div class="form__input--description">
-                        <textarea name="description" value="{{ old('description') }}"></textarea>
+                        <textarea name="description">{{ old('description') }}</textarea>
                     </div>
                     @error('description')
                         <p class="error-message">{{ $message }}</p>

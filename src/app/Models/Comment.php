@@ -9,7 +9,6 @@ class Comment extends Model
 {
     use HasFactory;
 
-    // これがないと保存時にエラーになります
     protected $fillable = [
         'user_id',
         'item_id',
@@ -18,7 +17,6 @@ class Comment extends Model
 
     public function user()
     {
-        // 修正：e に直しました
         return $this->belongsTo(User::class);
     }
 

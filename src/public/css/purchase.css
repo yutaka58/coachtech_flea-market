@@ -59,11 +59,14 @@
     justify-content: space-between;
 }
 
+.product-details__payment {
+    height: 100px;
+}
+
 .payment-method {
     width: 300px;
     padding: 5px;
     margin-left: 80px;
-    margin-bottom: 30px;
 }
 
 .payment-method option {

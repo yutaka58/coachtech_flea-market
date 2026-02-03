@@ -65,14 +65,15 @@
     color: red;
 }
 
-/* 商品一覧のグリッドレイアウト */
 .item-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, 200px);
     gap: 20px;
     padding: 30px 50px;
 }
 
 .item-img {
     width: 200px;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
 }
