@@ -17,6 +17,9 @@ class CreateOrdersTable extends Migration
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained();    // 購入者ID
             $table->foreignId('item_id')->constrained(); // 商品ID
+            $table->string('post_code');
+            $table->string('address');
+            $table->string('building')->nullable();
             $table->timestamps();
         });
     }

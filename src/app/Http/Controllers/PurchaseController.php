@@ -47,13 +47,16 @@ class PurchaseController extends Controller
         \App\Models\Order::create([
             'user_id' => auth()->id(),
             'item_id' => $item_id,
-            'payment_method' => $paymentMethod, // DBのカラム名に合わせてください
+            'payment_method' => $paymentMethod,
+            'post_code' => $request->post_code,
+            'address' => $request->address,
+            'building' => $request->building,
         ]);
 
         // 購入完了後はセッションを削除する
         session()->forget('payment_method');
 
-        return redirect('/')->with('success', '購入が完了しました！');
+        return redirect('/');
     }
 
     public function savePaymentMethod(Request $request, $item_id)
