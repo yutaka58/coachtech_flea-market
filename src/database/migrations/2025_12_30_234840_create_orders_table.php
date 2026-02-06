@@ -15,11 +15,11 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->nullable()->constrained();    // 購入者ID
-            $table->foreignId('item_id')->constrained(); // 商品ID
+            $table->foreignId('user_id')->nullable()->constrained();
+            $table->foreignId('item_id')->constrained();
             $table->string('post_code');
             $table->string('address');
-            $table->string('building')->nullable();
+            $table->string('building');
             $table->timestamps();
         });
     }
