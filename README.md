@@ -1,19 +1,20 @@
-# coachtech フリマアプリ (coachtech_flea-market-app)
+# coachtech_flea-market-app
 
 ## 環境構築
 
 **Docker ビルド**
 
 1. `git clone git@github.com:yutaka58/coachtech_flea-market-app.git`
-2. DockerDesktop アプリを立ち上げる
-3. `docker-compose up -d --build`
+2. `cd coachtech_flea-market-app`
+3. DockerDesktop アプリを立ち上げる
+4. `docker-compose up -d --build`
 
 **Laravel 環境構築**
 
 1. `docker-compose exec php bash`
-2. laravel のプロジェクトの作成
-3. `composer create-project "laravel/laravel=8.*" . --prefer-dist`
-4. 作成された「.env」に以下の環境変数を追加
+2. `composer install`
+3. 「.env.example」ファイルを 「.env」ファイルに命名を変更。または、新しく.envファイルを作成
+4. .envに以下の環境変数を追加
 
 ```text
 DB_CONNECTION=mysql
