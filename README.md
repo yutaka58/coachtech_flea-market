@@ -13,7 +13,15 @@
 
 1. `docker-compose exec php bash`
 2. `composer install`
+
 3. 「.env.example」ファイルを 「.env」ファイルに命名を変更。または、新しく.envファイルを作成
+
+```bash
+mv .env.example
+または
+cp .env.example .env
+```
+
 4. .envに以下の環境変数を追加
 
 ```text
@@ -25,25 +33,28 @@ DB_USERNAME=laravel_user
 DB_PASSWORD=laravel_pass
 ```
 
-5. アプリケーションキーの作成
+5. Windows環境の場合は、「全てのファイル」と「.env」ファイルの権限変更。
+   `sudo chmod -R 777 src/*`、 `sudo chmod -R 777 src/.env`
+
+6. アプリケーションキーの作成
 
 ```bash
 php artisan key:generate
 ```
 
-6. マイグレーションの実行
+7. マイグレーションの実行
 
 ```bash
 php artisan migrate
 ```
 
-7. シーディングの実行
+8. シーディングの実行
 
 ```bash
 php artisan db:seed
 ```
 
-8. シンボリックリンク作成
+9. シンボリックリンク作成
 
 ```bash
 php artisan storage:link
