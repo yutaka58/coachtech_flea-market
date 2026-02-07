@@ -9,6 +9,9 @@ use App\Http\Controllers\ExhibitionController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FavoriteController;
 
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -30,13 +33,33 @@ Route::get('/item/{item_id}', [ItemController::class, 'show']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'Register']);
 
+// --- メール認証誘導・処理（authのみ必要、verifiedは不要） ---
+Route::middleware('auth')->group(function () {
+    // b. メール認証誘導画面
+    Route::get('/email/verify', [AuthController::class, 'certification'])->name('verification.notice');
+
+    // c. メール認証処理（メール内リンククリック時）
+    Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+        $request->fulfill();
+        return redirect('/mypage/profile'); // d. プロフィール設定画面へ
+    })->middleware('signed')->name('verification.verify');
+
+    // 認証メール再送
+    Route::post('/email/verification-notification', function (Request $request) {
+        $request->user()->sendEmailVerificationNotification();
+        return back()->with('message', '認証メールを再送しました。');
+    })->middleware('throttle:6,1')->name('verification.send');
+    
+    // ログアウトは認証さえしてればいつでもできるように外に出しておく
+    Route::post('/logout', [AuthController::class, 'logout']);
+});
 
 // 検索機能
 route::get('/search', [ItemController::class, 'getSearch']);
 
 
 // --- 認証ルート（ログイン必須） ---
-Route::middleware('auth')->group(function () {
+Route::middleware('auth', 'verified')->group(function () {
     // ログアウト
     Route::post('/logout', [AuthController::class, 'logout']);
 

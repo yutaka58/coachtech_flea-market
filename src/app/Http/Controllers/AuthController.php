@@ -28,18 +28,26 @@ class AuthController extends Controller
     // 会員登録の保存処理
     public function Register(RegisterRequest $request)
     {
-        // 1. ユーザー作成
+        // ユーザー作成
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
 
-        // 2. 作成したユーザーで自動ログインさせる
+        // 認証メールを送信
+        event(new \Illuminate\Auth\Events\Registered($user));
+
+        // 作成したユーザーで自動ログインさせる
         Auth::login($user);
 
-        // 3. プロフィール設定画面へリダイレクト
-        return redirect('/mypage/profile');
+        // 認証誘導画面へリダイレクト
+        return redirect()->route('verification.notice');
+    }
+
+    public function certification(Request $request)
+    {
+        return view('auth.certification');
     }
 
         //ログアウト機能
