@@ -80,6 +80,9 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::post('/purchase/{item_id}', [PurchaseController::class, 'storePurchase'])->name('purchase.store');
     Route::post('/purchase/payment/{item_id}', [PurchaseController::class, 'savePaymentMethod'])->name('payment.save_session');
 
+    // 決済成功時のページ
+    Route::get('purchase/success/{item_id}', [PurchaseController::class, 'success'])->name('purchase.success');
+
     // 住所変更
     Route::get('/purchase/address/{item_id}', [ProfileController::class, 'address'])->name('address.edit');
     Route::post('/purchase/address/{item_id}', [ProfileController::class, 'updateAddress'])->name('address.update');

@@ -12,6 +12,9 @@ use App\Models\Order;
 
 use App\Http\Requests\PurchaseRequest;
 
+use Stripe\Stripe;
+use Stripe\Checkout\Session;
+
 class PurchaseController extends Controller
 {
     // 購入画面を表示用
@@ -35,28 +38,59 @@ class PurchaseController extends Controller
     }
 
     // 購入実装
-    public function storePurchase(PurchaseRequest $request, $item_id)
+public function storePurchase(PurchaseRequest $request, $item_id)
     {
-        // セッションから保存しておいた支払い方法を取得
-        $paymentMethod = $request->payment_method ?: session('payment_method');
-
-        if (!$paymentMethod) {
-            return redirect()->back()->with('error', '支払い方法を選択してください。');
+        $item = Item::findOrFail($item_id);
+        
+        // 支払い方法の取得とバリデーション
+        $method = $request->payment_method ?: session('payment_method');
+        if (!$method) {
+            return redirect()->back()->withErrors(['payment_method' => '支払い方法を選択してください。']);
         }
 
-        \App\Models\Order::create([
-            'user_id' => auth()->id(),
-            'item_id' => $item_id,
-            'payment_method' => $paymentMethod,
-            'post_code' => $request->post_code,
-            'address' => $request->address,
-            'building' => $request->building,
+        // --- 注文情報の保存をここで行う場合 ---
+        // 注意：本来はStripeの決済が完了した通知（Webhook）を受けてから保存するのが理想ですが、
+        // 簡易実装として決済画面へ飛ぶ直前に作成します。
+        Order::create([
+            'user_id'        => auth()->id(),
+            'item_id'        => $item_id,
+            'payment_method' => $method,
+            'post_code'      => $request->post_code,
+            'address'        => $request->address,
+            'building'       => $request->building,
         ]);
 
-        // 購入完了後はセッションを削除する
+        // Stripe APIキーの設定
+        Stripe::setApiKey(config('services.stripe.secret') ?: env('STRIPE_SECRET_KEY'));
+
+        // Stripe Checkoutセッションの作成
+        $session = Session::create([
+            'payment_method_types' => [$method === 'card' ? 'card' : 'konbini'],
+            'line_items' => [[
+                'price_data' => [
+                    'currency' => 'jpy',
+                    'product_data' => [
+                        'name' => $item->name,
+                    ],
+                    'unit_amount' => $item->price,
+                ],
+                'quantity' => 1,
+            ]],
+            'mode' => 'payment',
+            'success_url' => route('purchase.success', ['item_id' => $item->id]),
+            'cancel_url'  => route('purchase.show', ['item_id' => $item->id]),
+        ]);
+
+        // 購入完了処理に向けてセッションを掃除
         session()->forget('payment_method');
 
-        return redirect('/');
+        return redirect()->away($session->url);
+    }
+
+    public function success($item_id)
+    {
+        // ここでメッセージを添えてトップページへリダイレクト
+        return redirect('/')->with('message', 'ご購入ありがとうございました！');
     }
 
     public function savePaymentMethod(Request $request, $item_id)
