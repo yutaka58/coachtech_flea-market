@@ -38,40 +38,29 @@ class PurchaseController extends Controller
     }
 
     // 購入実装
-public function storePurchase(PurchaseRequest $request, $item_id)
+    public function storePurchase(PurchaseRequest $request, $item_id)
     {
         $item = Item::findOrFail($item_id);
-        
-        // 支払い方法の取得とバリデーション
-        $method = $request->payment_method ?: session('payment_method');
-        if (!$method) {
-            return redirect()->back()->withErrors(['payment_method' => '支払い方法を選択してください。']);
-        }
 
-        // --- 注文情報の保存をここで行う場合 ---
-        // 注意：本来はStripeの決済が完了した通知（Webhook）を受けてから保存するのが理想ですが、
-        // 簡易実装として決済画面へ飛ぶ直前に作成します。
-        Order::create([
-            'user_id'        => auth()->id(),
+        // 1. フォームから送られた配送先や支払い方法をセッションに一時保存
+        session(['order_data' => [
             'item_id'        => $item_id,
-            'payment_method' => $method,
+            'payment_method' => $request->payment_method,
             'post_code'      => $request->post_code,
             'address'        => $request->address,
             'building'       => $request->building,
-        ]);
+        ]]);
 
-        // Stripe APIキーの設定
-        Stripe::setApiKey(config('services.stripe.secret') ?: env('STRIPE_SECRET_KEY'));
+        // Stripe API設定
+        \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
 
-        // Stripe Checkoutセッションの作成
-        $session = Session::create([
-            'payment_method_types' => [$method === 'card' ? 'card' : 'konbini'],
+        // チェックアウトセッション作成
+        $session = \Stripe\Checkout\Session::create([
+            'payment_method_types' => [$request->payment_method === 'card' ? 'card' : 'konbini'],
             'line_items' => [[
                 'price_data' => [
                     'currency' => 'jpy',
-                    'product_data' => [
-                        'name' => $item->name,
-                    ],
+                    'product_data' => ['name' => $item->name],
                     'unit_amount' => $item->price,
                 ],
                 'quantity' => 1,
@@ -81,15 +70,31 @@ public function storePurchase(PurchaseRequest $request, $item_id)
             'cancel_url'  => route('purchase.show', ['item_id' => $item->id]),
         ]);
 
-        // 購入完了処理に向けてセッションを掃除
-        session()->forget('payment_method');
-
         return redirect()->away($session->url);
     }
 
+    // 決済完了後
     public function success($item_id)
     {
-        // ここでメッセージを添えてトップページへリダイレクト
+        // 2. セッションから保存しておいた注文情報を取り出す
+        $orderData = session('order_data');
+
+        // データが存在する場合のみDBに保存（リロード対策）
+        if ($orderData && $orderData['item_id'] == $item_id) {
+            \App\Models\Order::create([
+                'user_id'        => auth()->id(),
+                'item_id'        => $item_id,
+                'payment_method' => $orderData['payment_method'],
+                'post_code'      => $orderData['post_code'],
+                'address'        => $orderData['address'],
+                'building'       => $orderData['building'],
+            ]);
+
+        // 3. 保存が終わったらセッションを削除（二重保存防止）
+        session()->forget('order_data');
+        session()->forget('payment_method'); // 支払い方法選択のセッションもあれば削除
+        }
+
         return redirect('/')->with('message', 'ご購入ありがとうございました！');
     }
 
