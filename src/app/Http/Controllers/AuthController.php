@@ -14,8 +14,6 @@ use Illuminate\Support\Facades\Hash;
 class AuthController extends Controller
 {
     // ログイン処理
-    // AuthController.php
-
     public function login(LoginRequest $request) {
         $credentials = $request->only('email', 'password');
 
