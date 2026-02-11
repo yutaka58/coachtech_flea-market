@@ -12,6 +12,8 @@ use App\Http\Controllers\FavoriteController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 
+use App\Models\User;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -33,25 +35,40 @@ Route::get('/item/{item_id}', [ItemController::class, 'show']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'Register']);
 
-// --- メール認証誘導・処理（authのみ必要、verifiedは不要） ---
+// --- 公開ルート（authミドルウェアの外） ---
+
+Route::get('/email/verify/{id}/{hash}', function (Request $request, $id, $hash) {
+    // 1. URLのIDからユーザーを直接見つける
+    $user = User::findOrFail($id);
+
+    // 2. URLの署名（ハッシュ）が正しいか手動でチェック
+    // これにより、他人が勝手に他人のメールを認証することを防ぎます
+    if (! hash_equals((string) $hash, sha1($user->getEmailForVerification()))) {
+        abort(403, '認証リンクが無効です。');
+    }
+
+    // 3. すでに認証済みでなければ、email_verified_at を更新する
+    if (! $user->hasVerifiedEmail()) {
+        $user->markEmailAsVerified();
+        event(new \Illuminate\Auth\Events\Verified($user));
+    }
+
+    // ★重要：一度ログイン画面へ戻す（まだログインしていないため）
+    // 認証済みのフラグをメッセージとして渡す
+    return redirect('/mypage/profile')->with('verified', true)->with('message', '認証が完了しました。ログインしてください。');
+})->middleware(['signed'])->name('verification.verify');
+
+// 2. 認証誘導画面（「メールを確認してください」という案内）
+// 登録直後にログインさせないなら、ここも公開ルートにしておく必要があります。
+Route::get('/email/verify', [AuthController::class, 'certification'])->name('verification.notice');
+
+// --- ログイン中のみ可能なルート ---
 Route::middleware('auth')->group(function () {
-    // b. メール認証誘導画面
-    Route::get('/email/verify', [AuthController::class, 'certification'])->name('verification.notice');
-
-    // c. メール認証処理（メール内リンククリック時）
-    Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-        $request->fulfill();
-        return redirect('/mypage/profile'); // d. プロフィール設定画面へ
-    })->middleware('signed')->name('verification.verify');
-
     // 認証メール再送
     Route::post('/email/verification-notification', function (Request $request) {
         $request->user()->sendEmailVerificationNotification();
         return back()->with('message', '認証メールを再送しました。');
     })->middleware('throttle:6,1')->name('verification.send');
-    
-    // ログアウトは認証さえしてればいつでもできるように外に出しておく
-    Route::post('/logout', [AuthController::class, 'logout']);
 });
 
 // 検索機能

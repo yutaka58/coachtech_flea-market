@@ -14,11 +14,23 @@ use Illuminate\Support\Facades\Hash;
 class AuthController extends Controller
 {
     // ログイン処理
+    // AuthController.php
+
     public function login(LoginRequest $request) {
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-        return redirect('/');
+            $request->session()->regenerate();
+            $user = Auth::user();
+
+            // メール認証が済んでいない場合
+            if (!$user->hasVerifiedEmail()) {
+                // ★ ここでログイン状態を維持したまま、認証誘導画面へ飛ばす
+                return redirect()->route('verification.notice')
+                                ->with('message', 'メール認証が完了していません。まずは認証を完了してください。');
+            }
+
+            return redirect('/mypage/profile');
         }
 
         return back()->withErrors(['email' => 'ログイン情報が登録されていません']);
@@ -37,9 +49,6 @@ class AuthController extends Controller
 
         // 認証メールを送信
         event(new \Illuminate\Auth\Events\Registered($user));
-
-        // 作成したユーザーで自動ログインさせる
-        Auth::login($user);
 
         // 認証誘導画面へリダイレクト
         return redirect()->route('verification.notice');
