@@ -58,6 +58,7 @@ Route::get('/email/verify/{id}/{hash}', function (Request $request, $id, $hash) 
     return redirect('/mypage/profile')->with('verified', true)->with('message', '認証が完了しました。ログインしてください。');
 })->middleware(['signed'])->name('verification.verify');
 
+
 // 2. 認証誘導画面（「メールを確認してください」という案内）
 // 登録直後にログインさせないなら、ここも公開ルートにしておく必要があります。
 Route::get('/email/verify', [AuthController::class, 'certification'])->name('verification.notice');

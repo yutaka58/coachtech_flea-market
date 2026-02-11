@@ -23,14 +23,19 @@ class AuthController extends Controller
             $request->session()->regenerate();
             $user = Auth::user();
 
-            // メール認証が済んでいない場合
+            // 1.メール認証が済んでいない場合
             if (!$user->hasVerifiedEmail()) {
                 // ★ ここでログイン状態を維持したまま、認証誘導画面へ飛ばす
-                return redirect()->route('verification.notice')
-                                ->with('message', 'メール認証が完了していません。まずは認証を完了してください。');
+                return redirect()->route('verification.notice');
             }
 
-            return redirect('/mypage/profile');
+            // 2.メール認証済み、かつプロフィールが未設定（初回）の場合はプロフィール設定へ
+            if (empty($user->address)) {
+                return redirect('/mypage/profile');
+            }
+
+            // 3.それ以外（2回目以降）は商品一覧（トップページ）へ
+            return redirect('/');
         }
 
         return back()->withErrors(['email' => 'ログイン情報が登録されていません']);
