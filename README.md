@@ -1,4 +1,4 @@
-# coachtech_flea-market-app
+# coachtechフリマ（coachtech_flea-market）
 
 ## 環境構築
 
