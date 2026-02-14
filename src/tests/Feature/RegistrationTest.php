@@ -12,7 +12,7 @@ class RegistrationTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * 名前が入力されていない場合、バリデーションメッセージが表示される
+     * ID 1:名前が入力されていない場合、バリデーションメッセージが表示される
      */
     public function test_name_is_required()
     {
@@ -28,7 +28,7 @@ class RegistrationTest extends TestCase
     }
 
     /**
-     * メールアドレスが入力されていない場合、バリデーションメッセージが表示される
+     * ID 1:メールアドレスが入力されていない場合、バリデーションメッセージが表示される
      */
     public function test_email_is_required()
     {
@@ -44,7 +44,7 @@ class RegistrationTest extends TestCase
     }
 
     /**
-     * パスワードが入力されていない場合、バリデーションメッセージが表示される
+     * ID 1:パスワードが入力されていない場合、バリデーションメッセージが表示される
      */
     public function test_password_is_required()
     {
@@ -60,7 +60,7 @@ class RegistrationTest extends TestCase
     }
 
     /**
-     * パスワードが8文字以上で入力されていない場合、バリデーションメッセージが表示される
+     * ID 1:パスワードが8文字以上で入力されていない場合、バリデーションメッセージが表示される
      */
     public function test_password_characters_is_required()
     {
@@ -76,7 +76,7 @@ class RegistrationTest extends TestCase
     }
 
     /**
-     * パスワードが確認用パスワードと一致していない場合、バリデーションメッセージが表示される
+     * ID 1:パスワードが確認用パスワードと一致していない場合、バリデーションメッセージが表示される
      */
     public function test_password_match_is_required()
     {
@@ -92,7 +92,7 @@ class RegistrationTest extends TestCase
     }
 
     /**
-     * 全ての項目が入力され、登録成功しプロフィール設定画面へ遷移する
+     * ID 1:全ての項目が入力され、登録成功しプロフィール設定画面へ遷移する
      */
     public function test_registration_success_and_can_access_profile_after_verify()
     {

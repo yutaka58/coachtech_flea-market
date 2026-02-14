@@ -9,7 +9,7 @@ class Login_LogoutTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * メールアドレスが入力されていない場合、バリデーションメッセージが表示される
+     * ID 2:メールアドレスが入力されていない場合、バリデーションメッセージが表示される
      */
     public function test_email_required()
     {
@@ -23,7 +23,7 @@ class Login_LogoutTest extends TestCase
     }
 
     /**
-     * パスワードが入力されていない場合、バリデーションメッセージが表示される
+     * ID 2:パスワードが入力されていない場合、バリデーションメッセージが表示される
      */
     public function test_email_registration_required()
     {
@@ -37,7 +37,7 @@ class Login_LogoutTest extends TestCase
     }
 
     /**
-     * 登録情報と一致して場合、ログインされる
+     * ID 2:登録情報と一致して場合、ログインされる
      */
     public function test_login_success()
     {
@@ -58,7 +58,7 @@ class Login_LogoutTest extends TestCase
     }
 
     /**
-     * ログアウトができる
+     * ID 3:ログアウトができる
      */
     public function test_logout_success()
     {
