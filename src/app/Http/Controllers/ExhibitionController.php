@@ -28,6 +28,7 @@ class ExhibitionController extends Controller
         $item = new Item();
         $item->user_id = Auth::id();
         $item->name = $request->name;
+        $item->brand = $request->brand;
         $item->description = $request->description;
         $item->condition = $request->condition;
 
@@ -48,7 +49,6 @@ class ExhibitionController extends Controller
         $item->save();
 
         // 5. 中間テーブル(category_product)にカテゴリーを保存
-        // attachを使うことで、多対多のリレーションが保存されます
         $item->categories()->attach($request->category_id);
 
         return redirect('/')->with('success', '出品が完了しました');
