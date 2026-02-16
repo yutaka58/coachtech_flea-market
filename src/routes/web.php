@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\AuthController;
@@ -53,7 +54,10 @@ Route::get('/email/verify/{id}/{hash}', function (Request $request, $id, $hash) 
         event(new \Illuminate\Auth\Events\Verified($user));
     }
 
-    // ★重要：一度ログイン画面へ戻す（まだログインしていないため）
+    // ログインを実行
+    Auth::login($user);
+
+    // 一度ログイン画面へ戻す（まだログインしていないため）
     // 認証済みのフラグをメッセージとして渡す
     return redirect('/mypage/profile')->with('verified', true)->with('message', '認証が完了しました。ログインしてください。');
 })->middleware(['signed'])->name('verification.verify');
