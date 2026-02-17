@@ -29,11 +29,10 @@ class PurchaseController extends Controller
             return redirect('/');
         }
 
-        // セッションに保存された支払い方法を取得。なければ null
+        // セッションに保存された支払い方法を取得
         $payment_id = session('payment_method');
         // ---------------------
 
-        // 購入画面（purchase.blade.php）を表示
         return response()->view('purchase', compact('item', 'user', 'payment_id'));
     }
 
@@ -79,7 +78,7 @@ class PurchaseController extends Controller
         // 2. セッションから保存しておいた注文情報を取り出す
         $orderData = session('order_data');
 
-        // データが存在する場合のみDBに保存（リロード対策）
+        // データが存在する場合のみDBに保存
         if ($orderData && $orderData['item_id'] == $item_id) {
             \App\Models\Order::create([
                 'user_id'        => auth()->id(),
@@ -95,7 +94,7 @@ class PurchaseController extends Controller
         session()->forget('payment_method'); // 支払い方法選択のセッションもあれば削除
         }
 
-        return redirect('/')->with('message', 'ご購入ありがとうございました！');
+        return redirect('/');
     }
 
     public function savePaymentMethod(Request $request, $item_id)

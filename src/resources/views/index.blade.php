@@ -41,6 +41,9 @@
             <p>表示する商品がありません。</p>
         @endforelse
     </div>
+    <div class="pagination-wrapper">
+        {{ $items->appends(request()->query())->links() }}
+    </div>
 </div>
 
 @endsection

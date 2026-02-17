@@ -9,27 +9,22 @@
     text-align: center;
 }
 
-/* 画像プレビューの調整 */
 .image-preview {
     position: absolute;
-    /* 画像を背景のように扱う */
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     padding: 0;
-    /* 余白を消すと綺麗に収まります */
 }
 
 .image-preview img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    /* 画像の比率を保ったまま枠に収める */
 }
 
 .image-upload-label {
-    /* position: absolute; は削除するか、中央配置を維持する設定にします */
     padding: 8px 25px;
     border: 1px solid #ff4b2b;
     color: #ff4b2b;
@@ -38,9 +33,7 @@
     font-weight: bold;
     transition: 0.3s;
     background-color: #fff;
-    /* 背景を白にすると画像と重なっても見やすい */
     z-index: 10;
-    /* 画像より手前に表示 */
 }
 
 .image-upload-label:hover {
@@ -60,21 +53,15 @@
 
 .form-grid {
     border: 1px dashed #ccc;
-    /* 枠線を見やすく */
     border-radius: 5px;
     width: 100%;
     min-height: 150px;
-    /* 高さを少し確保 */
     position: relative;
 
-    /* 真ん中に配置するための設定 */
     display: flex;
     justify-content: center;
-    /* 左右中央 */
     align-items: center;
-    /* 上下中央 */
     flex-direction: column;
-    /* プレビュー画像とボタンを縦に並べる場合 */
 }
 
 .form__group-title {
@@ -150,7 +137,6 @@
 
 .form__select-content {
     position: relative;
-    /* 矢印の基準点 */
     display: inline-block;
     width: 100%;
 }
@@ -159,23 +145,16 @@
     content: "";
     position: absolute;
     right: 15px;
-    /* 右端からの距離 */
     top: 50%;
-    /* 中央に配置 */
     transform: translateY(-50%);
-    /* 垂直中央合わせ */
 
-    /* 三角形の作成 */
     width: 0;
     height: 0;
     border-left: 6px solid transparent;
-    /* 左の透明な辺 */
     border-right: 6px solid transparent;
-    /* 右の透明な辺 */
     border-top: 15px solid #000;
-    /* 黒色の下向き三角 */
     pointer-events: none;
-    /* 矢印の上をクリックしてもセレクトボックスが反応するようにする */
+
 }
 
 .form__input--condition {
@@ -214,15 +193,9 @@
 
 .error-message {
     text-align: left;
-    /* 文字を左寄せにする */
     color: #ff0000;
-    /* 赤色 */
     font-size: 14px;
-    /* 必要に応じてサイズ調整 */
     margin-top: 5px;
-    /* 入力欄との隙間 */
     width: 100%;
-    /* 幅いっぱいに広げて左端を基準にする */
     display: block;
-    /* 確実にブロック要素として扱う */
 }

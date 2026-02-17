@@ -34,6 +34,9 @@
                     </div>
                 @endforeach
             </div>
+            <div class="pagination-wrapper">
+                {{ $sellItems->appends(request()->query())->links() }}
+            </div>
         @else
             {{-- 購入した商品の一覧 --}}
             <div class="item-grid">
@@ -44,9 +47,11 @@
                     </div>
                 @endforeach
             </div>
+            <div class="pagination-wrapper">
+                {{ $buyItems->appends(request()->query())->links() }}
+            </div>
         @endif
     </div>
-
 </div>
 
 @endsection

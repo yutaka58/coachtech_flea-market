@@ -2,22 +2,16 @@
     display: flex;
     align-items: center;
     background-color: #000;
-    /* 背景が黒の場合 */
     padding: 0 50px;
 }
 
-/* 1. ロゴエリア */
 .header-content img {
     width: 250px;
-    /* 画像のサイズに合わせて調整 */
     flex: 1;
-    /* 左側の比率を1にする */
 }
 
-/* 2. 検索フォームエリア（中央） */
 .search-form {
     flex: 1.5;
-    /* 中央を広く取る（比率2） */
     display: flex;
     justify-content: end;
 
@@ -25,28 +19,21 @@
 
 .search-form__keyword-input {
     width: 100%;
-    /* 親のflex:2の中でいっぱいに広げる */
     max-width: 450px;
-    /* 広がりすぎないように画像に近い幅で制限 */
     padding: 10px 15px;
     border: 1px solid #000;
     border-radius: 4px;
 }
 
-/* 3. ナビゲーションエリア（右側） */
 .header-nav {
     flex: 1;
-    /* 右側の比率を1にする（左のロゴエリアと同じ幅になる） */
     display: flex;
     list-style: none;
     align-items: center;
     justify-content: flex-end;
-    /* 右寄せにする */
     gap: 50px;
-    /* ログアウト、マイページ、出品の間の間隔 */
 }
 
-/* 出品ボタン（画像のような白い四角いボタンにする場合） */
 .header-nav__exhibition-button {
     background: #fff;
     color: #000;
@@ -57,13 +44,11 @@
     font-weight: bold;
 }
 
-/* リンクテキスト（ログアウト、マイページ） */
 .header-nav__link,
 .header-nav__link-button {
     color: #fff;
     text-decoration: none;
     white-space: nowrap;
-    /* 改行させない */
     background-color: #000;
     font-size: 15px;
 }

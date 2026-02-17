@@ -14,12 +14,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // 1. カテゴリーなどのマスターデータ（商品が依存するもの）
         $this->call([
             CategoryTableSeeder::class,
         ]);
 
-        // 2. テストユーザー（重複を避ける書き方）
         \App\Models\User::firstOrCreate(
             ['email' => 'test@example.com'],
             [
@@ -28,7 +26,6 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        // 3. その他、商品や注文など
         $this->call([
             ItemTableSeeder::class,
 

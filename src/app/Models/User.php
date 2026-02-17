@@ -48,7 +48,6 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function favoriteItems()
     {
-        // favoritesテーブルを中間テーブルとして、Itemモデルと紐付け
         return $this->belongsToMany(Item::class, 'favorites');
     }
 

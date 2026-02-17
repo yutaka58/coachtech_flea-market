@@ -17,9 +17,9 @@ class ProfileController extends Controller
 {
     // プロフィール設定画面を表示する
     public function editProfile() {
-        // 現在ログインしているユーザー情報を取得
+
         $user = Auth::user();
-        return view('profile', compact('user')); // profile.blade.phpを表示
+        return view('profile', compact('user'));
     }
 
     // プロフィール変更用
@@ -33,7 +33,7 @@ class ProfileController extends Controller
             if ($user->image) {
                 Storage::disk('public')->delete('$user->image');
             }
-            // storage/app/public/profiles に保存される
+            // storage/app/public/profiles に保存
             $path = $request->file('image')->store('profiles', 'public');
             $user->image = $path;
         }
@@ -53,14 +53,13 @@ class ProfileController extends Controller
     public function mypage(Request $request)
     {
         $user = Auth::user();
-        // 現在のタブを取得
         $page = $request->query('page', 'sell');
         // 出品した商品を取得
-        $sellItems = Item::where('user_id', $user->id)->get();
-        // 購入した商品を取得(Orderモデル経由でItemを取得)
+        $sellItems = Item::where('user_id', $user->id)->paginate(7, ['*'], 'sell_page');
+        // 購入した商品を取得
         $buyItems = Item::whereHas('order', function($q) use($user) {
             $q->where('user_id', $user->id);
-        })->get();
+        })->paginate(7, ['*'], 'buy_page');
 
         return view('mypage', compact('user', 'page', 'sellItems', 'buyItems'));
     }

@@ -27,7 +27,6 @@ use App\Models\User;
 */
 
 // --- 公開ルート（誰でもアクセス可能） ---
-// トップページ（indexメソッド内でログイン判定を行っているため、authの外でOK）
 Route::get('/', [ItemController::class, 'index']);
 Route::get('/item/{item_id}', [ItemController::class, 'show']);
 
@@ -42,13 +41,7 @@ Route::get('/email/verify/{id}/{hash}', function (Request $request, $id, $hash) 
     // 1. URLのIDからユーザーを直接見つける
     $user = User::findOrFail($id);
 
-    // 2. URLの署名（ハッシュ）が正しいか手動でチェック
-    // これにより、他人が勝手に他人のメールを認証することを防ぎます
-    if (! hash_equals((string) $hash, sha1($user->getEmailForVerification()))) {
-        abort(403, '認証リンクが無効です。');
-    }
-
-    // 3. すでに認証済みでなければ、email_verified_at を更新する
+    // 2. すでに認証済みでなければ、email_verified_at を更新する
     if (! $user->hasVerifiedEmail()) {
         $user->markEmailAsVerified();
         event(new \Illuminate\Auth\Events\Verified($user));
@@ -58,13 +51,11 @@ Route::get('/email/verify/{id}/{hash}', function (Request $request, $id, $hash) 
     Auth::login($user);
 
     // 一度ログイン画面へ戻す（まだログインしていないため）
-    // 認証済みのフラグをメッセージとして渡す
-    return redirect('/mypage/profile')->with('verified', true)->with('message', '認証が完了しました。ログインしてください。');
+    return redirect('/mypage/profile')->with('verified', true);
 })->middleware(['signed'])->name('verification.verify');
 
 
-// 2. 認証誘導画面（「メールを確認してください」という案内）
-// 登録直後にログインさせないなら、ここも公開ルートにしておく必要があります。
+// 2. 認証誘導画面
 Route::get('/email/verify', [AuthController::class, 'certification'])->name('verification.notice');
 
 // --- ログイン中のみ可能なルート ---

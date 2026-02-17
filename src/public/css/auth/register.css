@@ -74,15 +74,9 @@
 
 .error-message {
     text-align: left;
-    /* 文字を左寄せにする */
     color: #ff0000;
-    /* 赤色 */
     font-size: 14px;
-    /* 必要に応じてサイズ調整 */
     margin-top: 5px;
-    /* 入力欄との隙間 */
     width: 100%;
-    /* 幅いっぱいに広げて左端を基準にする */
     display: block;
-    /* 確実にブロック要素として扱う */
 }

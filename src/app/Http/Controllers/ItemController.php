@@ -16,20 +16,16 @@ class ItemController extends Controller
     public function index(Request $request)
     {
         $tab = $request->query('tab', 'recommend');
-        $keyword = $request->query('keyword'); // 検索窓からの値
+        $keyword = $request->query('keyword');
 
-        // 1. まずは「全商品」をベースにする
         $query = Item::query();
 
-        // 2. 検索ワードがあれば、どのタブでも絞り込む
         if (!empty($keyword)) {
             $query->where('name', 'LIKE', "%{$keyword}%");
         }
 
-        // 3. タブに応じて条件を追加
         if ($tab === 'mylist') {
             if (Auth::check()) {
-                // Userモデルで定義した favoriteItems リレーションを利用
                 $query->whereHas('favorites', function($q) {
                     $q->where('user_id', Auth::id());
                 });
@@ -43,17 +39,15 @@ class ItemController extends Controller
             }
         }
 
-        $items = $query->get();
+        $items = $query->paginate(14);
 
         return view('index', compact('items', 'tab', 'keyword'));
     }
 
     public function show($item_id)
     {
-        // 商品を取得。見つからなければ404エラーを出す
         $item = Item::with(['order', 'categories', 'comments.user'])->findOrFail($item_id);
 
-        // 未認証ユーザーでも $item は取得できるので、そのままビューへ渡す
         return view('item', compact('item'));
     }
 
@@ -68,7 +62,7 @@ class ItemController extends Controller
             $query->where('name','like','%'.$keyword.'%');
         }
 
-        $items = $query->get();
+        $items = $query->paginate(14);
         $tab = 'recommend';
         return view('index')->with(compact('items','tab'));
     }

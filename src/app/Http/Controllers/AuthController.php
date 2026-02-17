@@ -23,7 +23,7 @@ class AuthController extends Controller
 
             // 1.メール認証が済んでいない場合
             if (!$user->hasVerifiedEmail()) {
-                // ★ ここでログイン状態を維持したまま、認証誘導画面へ飛ばす
+
                 return redirect()->route('verification.notice');
             }
 
@@ -43,7 +43,6 @@ class AuthController extends Controller
     // 会員登録の保存処理
     public function Register(RegisterRequest $request)
     {
-        // ユーザー作成
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -66,9 +65,9 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         Auth::logout();
-        $request->session()->invalidate(); // セッションを破棄
-        $request->session()->regenerateToken(); // CSRFトークンを再生成
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
-        return redirect('/login'); // ログイン画面へ遷移
+        return redirect('/login');
     }
 }

@@ -10,7 +10,7 @@ class Item extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id', // 出品者IDを保存する場合に必要
+        'user_id',
         'name',
         'price',
         'brand',

@@ -32,16 +32,15 @@ class ExhibitionController extends Controller
         $item->description = $request->description;
         $item->condition = $request->condition;
 
-        // 価格から記号を除去して数値に変換
         $price = str_replace(['￥', '¥', ','], '', $request->price);
         $item->price = (int)$price;
 
-        // 画像の保存（カラム名はデータベースに合わせ img_url）
+        // 画像の保存
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('items', 'public');
             $item->img_url = $path;
         } else {
-            // 画像がない場合に備えて、デフォルトのパスを入れる（エラー回避用）
+
             $item->img_url = 'items/default.png';
         }
 
@@ -51,6 +50,6 @@ class ExhibitionController extends Controller
         // 5. 中間テーブル(category_product)にカテゴリーを保存
         $item->categories()->attach($request->category_id);
 
-        return redirect('/')->with('success', '出品が完了しました');
+        return redirect('/');
     }
 }
